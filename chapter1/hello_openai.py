@@ -7,21 +7,19 @@ load_dotenv()
 
 # ② OpenAI API 키 가져오기
 api_key = os.environ.get('OPENAI_API_KEY')
-
 # ③ OpenAI 클라이언트 초기화
-client = OpenAI(api_key=api_key)
+client = OpenAI()
 
 def get_chat_completion(prompt, model="o3-mini"):
     # OpenAI Chat Completion API를 사용하여 AI의 응답을 받는 함수"
-    
+
     # ④ Chat Completion API 호출
     response = client.chat.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": "당신은 친절하고 도움이 되는 AI 비서입니다."},
             {"role": "user", "content": prompt}
-        ],
-        temperature=0.7,  # 응답의 창의성 조절 (0: 결정적, 1: 창의적)
+        ]
     )
     
     # ⑤ 응답 텍스트 반환
