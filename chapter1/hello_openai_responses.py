@@ -1,15 +1,15 @@
-# ① OpenAI API를 사용하여 AI 응답을 받아오는 코드
+#  OpenAI API를 사용하여 AI 응답을 받아오는 코드
 from openai import OpenAI
 client = OpenAI()  # OpenAI 클라이언트 초기화
 
 
 def get_responses(prompt, model="gpt-4o-mini"):
-    # ② 입력된 프롬프트에 대한 AI 응답을 받아오는 함수
+    # ① 입력된 프롬프트에 대한 AI 응답을 받아오는 함수
     # prompt: 사용자 입력 텍스트
     # model: 사용할 AI 모델 (기본값: gpt-4o-mini)
     response = client.responses.create(
         model=model,  # 사용할 모델 지정
-        tools=[{"type": "web_search_preview"}],  # 웹 검색 도구 활성화
+        tools=[{"type": "web_search_preview"}],  # ② 웹 검색 도구 활성화
         input=prompt  # 사용자 입력 전달
     )
     
