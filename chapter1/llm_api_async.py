@@ -9,7 +9,7 @@ openai_client = AsyncOpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 claude_client = AsyncAnthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
 
-async def call_async_openai(prompt: str, model: str = "gpt-4o-mini") -> str:
+async def call_async_openai(prompt: str, model: str = "gpt-4.1-mini") -> str:
     response = await openai_client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],

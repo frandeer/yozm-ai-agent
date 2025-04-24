@@ -1,8 +1,6 @@
 import anthropic
 
-client = anthropic.Anthropic(
-    api_key="API키를 넣으세요"
-)
+client = anthropic.Anthropic(api_key="API키를 넣으세요")
 
 # ① 대화 기록을 저장할 리스트
 conversation = []
@@ -12,9 +10,7 @@ conversation.append({"role": "user", "content": "안녕 나는 승귤이야."})
 
 # ② Claude 호출
 response = client.messages.create(
-    model="claude-3-5-haiku-latest",
-    max_tokens=1000,
-    messages=conversation
+    model="claude-3-5-haiku-latest", max_tokens=1000, messages=conversation
 )
 
 # ③ 응답 출력 및 대화 기록에 추가
@@ -27,9 +23,7 @@ conversation.append({"role": "user", "content": "내 이름이 뭐라고?."})
 
 # 다시 Claude 호출
 response = client.messages.create(
-    model="claude-3-5-haiku-20241022",
-    max_tokens=1000,
-    messages=conversation
+    model="claude-3-5-haiku-20241022", max_tokens=1000, messages=conversation
 )
 
 # ⑤ 두번째 응답 출력

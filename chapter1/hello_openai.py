@@ -6,9 +6,10 @@ from openai import OpenAI
 load_dotenv()
 
 # ② OpenAI API 키 가져오기
-api_key = os.environ.get('OPENAI_API_KEY')
+api_key = os.environ.get("OPENAI_API_KEY")
 # ③ OpenAI 클라이언트 초기화
 client = OpenAI()
+
 
 def get_chat_completion(prompt, model="o3-mini"):
     # OpenAI Chat Completion API를 사용하여 AI의 응답을 받는 함수"
@@ -18,13 +19,14 @@ def get_chat_completion(prompt, model="o3-mini"):
         model=model,
         messages=[
             {"role": "system", "content": "당신은 친절하고 도움이 되는 AI 비서입니다."},
-            {"role": "user", "content": prompt}
-        ]
+            {"role": "user", "content": prompt},
+        ],
     )
-    
+
     # ⑤ 응답 텍스트 반환
     return response.choices[0].message.content
-    
+
+
 if __name__ == "__main__":
     # ⑥ 사용자 입력 받기
     user_prompt = input("AI에게 물어볼 질문을 입력하세요: ")
