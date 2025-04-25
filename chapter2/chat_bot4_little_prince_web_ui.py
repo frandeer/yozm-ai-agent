@@ -1,5 +1,9 @@
 from openai import OpenAI
+from fastapi import FastAPI, Form
+from fastapi.responses import HTMLResponse
+import uvicorn
 
+app = FastAPI()
 client = OpenAI()
 
 # 어린왕자 페르소나
@@ -19,26 +23,73 @@ LITTLE_PRINCE_PERSONA = """
 복잡한 주제도 본질적으로 단순화하여 설명하세요.
 """
 
+# 대화 기록을 저장할 딕셔너리
+messages = []
+previous_response_id = None
 
-def chatbot_response(user_message: str, previous_response_id=None):
+
+def chatbot_response(user_message: str, prev_response_id=None):
     result = client.responses.create(
         model="gpt-4.1-mini",
         instructions=LITTLE_PRINCE_PERSONA,
         input=user_message,
-        previous_response_id=previous_response_id,
+        previous_response_id=prev_response_id,
     )
     return result
 
 
-if __name__ == "__main__":
-    # 여기서 사용자 메시지를 입력받고 응답을 출력합니다.
-    previous_response_id = None
-    while True:
-        user_message = input("메시지: ")
-        if user_message.lower() == "exit":
-            print("대화를 종료 합니다.")
-            break
+@app.get("/", response_class=HTMLResponse)
+async def read_root():
+    chat_history = ""
+    for msg in messages:
+        if msg["role"] == "user":
+            chat_history += f"<p><b>당신:</b> {msg['content']}</p>"
+        else:
+            chat_history += f"<p><b>어린 왕자:</b> {msg['content']}</p>"
 
-        result = chatbot_response(user_message, previous_response_id)
-        previous_response_id = result.id
-        print("어린 왕자 :", result.output_text)
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>어린 왕자 챗봇</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <h1>어린 왕자 챗봇</h1>
+        <div>
+            {chat_history}
+        </div>
+        <form action="/chat" method="post">
+            <input type="text" name="message" placeholder="메시지를 입력하세요..." required>
+            <button type="submit">전송</button>
+        </form>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
+
+
+@app.post("/chat", response_class=HTMLResponse)
+async def chat(message: str = Form(...)):
+    # FastAPI의 라우트 함수 간에 상태를 공유하기 위해 global 키워드 사용
+    # 더 나은 방법으로는 의존성 주입(Dependency Injection)이나 데이터베이스 사용이 있음
+    global previous_response_id, messages
+
+    # 사용자 메시지 저장
+    messages.append({"role": "user", "content": message})
+
+    # 챗봇 응답 받기
+    result = chatbot_response(message, previous_response_id)
+    previous_response_id = result.id
+
+    # 응답 저장
+    messages.append({"role": "little_prince", "content": result.output_text})
+
+    # 리다이렉트
+    return await read_root()
+
+
+if __name__ == "__main__":
+    uvicorn.run(
+        "chat_bot4_little_prince_web_ui:app", host="127.0.0.1", port=8000, reload=True
+    )
