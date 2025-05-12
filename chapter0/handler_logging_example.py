@@ -13,7 +13,7 @@ log_format = logging.Formatter(
 )
 
 # ③ 콘솔(표준 출력) 핸들러 설정
-console_handler = logging.StreamHandler(sys.stdout)
+console_handler = logging.StreamHandler(sys.stdout) # ty: ignore
 console_handler.setFormatter(log_format)
 console_handler.setLevel(logging.DEBUG)  # 콘솔에는 모든 레벨 출력
 logger.addHandler(console_handler)
