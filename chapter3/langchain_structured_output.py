@@ -1,31 +1,23 @@
 from pydantic import BaseModel, Field
-
-
-# 1) ------------------------------------------------------------------------
-#   Declare the response structure with Pydantic. LangChain will make the
-#   model pass these instructions to the LLM and also validate the JSON that
-#   comes back.
-
 from langchain.chat_models import init_chat_model
 
 llm = init_chat_model("gpt-4o-mini", model_provider="openai")
 
 
 class MovieReview(BaseModel):
-    """Structured representation of a single movie review."""
+    """① 영화 리뷰 스키마 정의"""
 
     title: str = Field(description="영화 제목")
     rating: float = Field(description="10점 만점 평점 (예: 7.5)")
     review: str = Field(description="한글 리뷰 (3~4문장)")
 
 
-# 2) ------------------------------------------------------------------------
-#   Build a StructuredOutputParser from the schema.
-
-
+# ② LLM에 스키마를 전달하여 구조화된 출력을 생성할 수 있도록 모델에 스키마를 바인딩
 structured_llm = llm.with_structured_output(MovieReview)
 
-result:MovieReview = structured_llm.invoke("영화 '기생충'에 대한 리뷰를 작성해 주세요.")
+result: MovieReview = structured_llm.invoke(
+    "영화 '기생충'에 대한 리뷰를 작성해 주세요."
+)
 
 print(type(result))
 print("==========================")
