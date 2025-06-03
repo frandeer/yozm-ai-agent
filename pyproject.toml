@@ -14,6 +14,7 @@ dependencies = [
     "langchain[anthropic,openai]>=0.3.24",
     "numpy>=2.2.6",
     "openai>=1.70.0",
+    "openai-agents>=0.0.12",
     "python-dotenv>=1.0.1",
     "python-multipart>=0.0.20",
     "rich>=14.0.0",
