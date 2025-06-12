@@ -3,6 +3,7 @@ from google.adk.agents import Agent, ParallelAgent, SequentialAgent
 from google.adk.tools import google_search
 
 # 병렬로 실행될 정보 수집 에이전트들
+# ① 날씨 정보 수집 에이전트 생성
 weather_fetcher = Agent(
     name="weather",
     model="gemini-2.5-flash-preview-05-20",
@@ -11,6 +12,7 @@ weather_fetcher = Agent(
     tools=[google_search],
 )
 
+# ② 날씨 정보 수집 에이전트 생성
 news_fetcher = Agent(
     name="news",
     model="gemini-2.5-flash-preview-05-20",
@@ -19,6 +21,7 @@ news_fetcher = Agent(
     tools=[google_search],
 )
 
+# ③ 주식 정보 수집 에이전트 생성
 stock_fetcher = Agent(
     name="stocks",
     model="gemini-2.5-flash-preview-05-20",
@@ -27,14 +30,14 @@ stock_fetcher = Agent(
     tools=[google_search],
 )
 
-# 병렬 실행 에이전트
+# ④ 병렬 실행 에이전트
 parallel_fetcher = ParallelAgent(
     name="multi_info_fetcher",
     sub_agents=[weather_fetcher, news_fetcher, stock_fetcher],
     description="여러 정보를 동시에 수집",
 )
 
-# 병렬 수집 결과를 종합하는 에이전트
+# ⑤ 수집 결과를 요약하는 에이전트
 summarizer = Agent(
     name="daily_briefing",
     model="gemini-2.5-flash-preview-05-20",
@@ -48,7 +51,7 @@ summarizer = Agent(
     """,
 )
 
-# 병렬 수집 후 종합하는 파이프라인
+# ⑥ 병렬 수집 후 종합하는 파이프라인
 daily_briefing_pipeline = SequentialAgent(
     name="daily_briefing_system",
     sub_agents=[parallel_fetcher, summarizer],
