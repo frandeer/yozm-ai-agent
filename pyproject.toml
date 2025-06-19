@@ -29,6 +29,7 @@ dependencies = [
     "litellm>=1.72.1",
     "langgraph>=0.4.8",
     "grandalf>=0.8",
+    "fastmcp>=2.8.1",
 ]
 
 [dependency-groups]
