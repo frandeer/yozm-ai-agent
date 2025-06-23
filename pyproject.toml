@@ -30,6 +30,7 @@ dependencies = [
     "langgraph>=0.4.8",
     "grandalf>=0.8",
     "fastmcp>=2.8.1",
+    "a2a-sdk>=0.2.8",
 ]
 
 [dependency-groups]
