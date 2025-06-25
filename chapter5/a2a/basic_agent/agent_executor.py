@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 
@@ -9,16 +7,10 @@ from a2a.types import Message
 from a2a.utils import new_agent_text_message
 
 
-def generate_message_id() -> str:
-    return uuid4().hex
-
-
 class HelloAgent:
-    """Simple Hello World Agent using LangChain and OpenAI."""
+    """① 랭체인과 OpenAI를 사용한 간단한 Hello World 에이전트."""
 
     def __init__(self):
-        """Initialize the agent with LangChain components."""
-
         self.chat = ChatOpenAI(
             model="gpt-4.1-mini",
             temperature=0.7,
@@ -37,7 +29,7 @@ class HelloAgent:
         )
 
     async def invoke(self, user_message: str) -> str:
-        """Process user message using LangChain and OpenAI."""
+        """② 유저 메시지를 처리하고 응답을 생성합니다."""
         chain = self.prompt | self.chat
         response = await chain.ainvoke({"message": user_message})
 
@@ -45,7 +37,7 @@ class HelloAgent:
 
 
 class HelloAgentExecutor(AgentExecutor):
-    """Basic A2A Agent Executor Implementation."""
+    """③ 간단한 Hello World 에이전트의 Executor"""
 
     def __init__(self):
         self.agent = HelloAgent()
@@ -55,17 +47,17 @@ class HelloAgentExecutor(AgentExecutor):
         context: RequestContext,
         event_queue: EventQueue,
     ) -> None:
-        """Execute the agent logic and enqueue response."""
-        # Extract user message from context
+        """④ 요청을 처리하고 응답을 생성합니다."""
+        # 유저 메시지를 추출
         message = context.message
         for part in message.parts:
             if part.root.text:
                 user_message = part.root.text
 
-        # Process the message with the agent
+        # 에이전트 실행
         result = await self.agent.invoke(user_message)
 
-        # Create and enqueue A2A message using utility function
+        # ⑤ 응답 메시지를 생성하고 이벤트 큐에 추가
         await event_queue.enqueue_event(new_agent_text_message(result))
 
     async def cancel(
@@ -73,8 +65,8 @@ class HelloAgentExecutor(AgentExecutor):
         context: RequestContext,
         event_queue: EventQueue,
     ) -> None:
-        """Handle cancellation requests."""
-        # Basic agent doesn't support cancellation
+        """요청을 취소"""
+        # 취소 기능은 지원하지 않음
         error_msg = "취소 기능은 지원되지 않습니다. Hello 에이전트는 즉시 응답합니다."
         error_message = Message(
             role="agent",
