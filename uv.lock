@@ -856,6 +856,18 @@ wheels = [
 ]
 
 [[package]]
+name = "feedparser"
+version = "6.0.11"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sgmllib3k" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ff/aa/7af346ebeb42a76bf108027fe7f3328bb4e57a3a96e53e21fd9ef9dd6dd0/feedparser-6.0.11.tar.gz", hash = "sha256:c9d0407b64c6f2a065d0ebb292c2b35c01050cc0dc33757461aaabdc4c4184d5", size = 286197 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7c/d4/8c31aad9cc18f451c49f7f9cfb5799dadffc88177f7917bc90a66459b1d7/feedparser-6.0.11-py3-none-any.whl", hash = "sha256:0be7ee7b395572b19ebeb1d6aafb0028dee11169f1c934e0ed67d54992f4ad45", size = 81343 },
+]
+
+[[package]]
 name = "filelock"
 version = "3.18.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2315,6 +2327,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c1/dd/c074adf91d2fe67f00dc3be4348119f40a9d0ead9e55c958f81492c522c0/langgraph_sdk-0.1.70.tar.gz", hash = "sha256:cc65ec33bcdf8c7008d43da2d2b0bc1dd09f98d21a7f636828d9379535069cf9", size = 71530 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8c/77/b0930ca5d54ef91e2bdb37e0f7dbeda1923e1e0b5b71ab3af35c103c2e39/langgraph_sdk-0.1.70-py3-none-any.whl", hash = "sha256:47f2b04a964f40a610c1636b387ea52f961ce7a233afc21d3103e5faac8ca1e5", size = 49986 },
+]
+
+[[package]]
+name = "langgraph-supervisor"
+version = "0.0.27"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "langchain-core" },
+    { name = "langgraph" },
+    { name = "langgraph-prebuilt" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c4/96/46a6bfa2df4a9f120438e1e6dc343f3804485e188f26e4428185c864699a/langgraph_supervisor-0.0.27.tar.gz", hash = "sha256:1d07b722f54ab446e4ce8ad45f26cde7a593a77b1d1641684d91cb8fe6ac725a", size = 20769 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/74/0e/48d0d29739e969450cd4aa5d83b68cb9cd3d1ba663cb3e02f43c445cbaf5/langgraph_supervisor-0.0.27-py3-none-any.whl", hash = "sha256:f3b200acf04fd7a0476b4688136fee49b0ed1505e6cec7058367e62fec2e8121", size = 15760 },
 ]
 
 [[package]]
@@ -4073,6 +4099,15 @@ wheels = [
 ]
 
 [[package]]
+name = "schedule"
+version = "1.2.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0c/91/b525790063015759f34447d4cf9d2ccb52cdee0f1dd6ff8764e863bcb74c/schedule-1.2.2.tar.gz", hash = "sha256:15fe9c75fe5fd9b9627f3f19cc0ef1420508f9f9a46f45cd0769ef75ede5f0b7", size = 26452 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/20/a7/84c96b61fd13205f2cafbe263cdb2745965974bdf3e0078f121dfeca5f02/schedule-1.2.2-py3-none-any.whl", hash = "sha256:5bef4a2a0183abf44046ae0d164cadcac21b1db011bdd8102e4a0c1e91e06a7d", size = 12220 },
+]
+
+[[package]]
 name = "send2trash"
 version = "1.8.3"
 source = { registry = "https://pypi.org/simple" }
@@ -4089,6 +4124,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/18/5d/3bf57dcd21979b887
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a3/dc/17031897dae0efacfea57dfd3a82fdd2a2aeb58e0ff71b77b87e44edc772/setuptools-80.9.0-py3-none-any.whl", hash = "sha256:062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922", size = 1201486 },
 ]
+
+[[package]]
+name = "sgmllib3k"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/9e/bd/3704a8c3e0942d711c1299ebf7b9091930adae6675d7c8f476a7ce48653c/sgmllib3k-1.0.0.tar.gz", hash = "sha256:7868fb1c8bfa764c1ac563d3cf369c381d1325d36124933a726f29fcdaa812e9", size = 5750 }
 
 [[package]]
 name = "shapely"
@@ -4931,12 +4972,14 @@ dependencies = [
     { name = "faiss-cpu" },
     { name = "fastapi" },
     { name = "fastmcp" },
+    { name = "feedparser" },
     { name = "geopy" },
     { name = "google-adk" },
     { name = "grandalf" },
     { name = "langchain", extra = ["anthropic", "openai"] },
     { name = "langchain-community" },
     { name = "langgraph" },
+    { name = "langgraph-supervisor" },
     { name = "litellm" },
     { name = "numpy" },
     { name = "openai" },
@@ -4944,6 +4987,7 @@ dependencies = [
     { name = "python-dotenv" },
     { name = "python-multipart" },
     { name = "rich" },
+    { name = "schedule" },
     { name = "tenacity" },
     { name = "tiktoken" },
     { name = "unstructured" },
@@ -4965,6 +5009,7 @@ requires-dist = [
     { name = "faiss-cpu", specifier = ">=1.11.0" },
     { name = "fastapi", specifier = ">=0.115.12" },
     { name = "fastmcp", specifier = ">=2.8.1" },
+    { name = "feedparser", specifier = ">=6.0.11" },
     { name = "geopy", specifier = ">=2.4.1" },
     { name = "google-adk", specifier = ">=1.2.0" },
     { name = "google-adk", specifier = ">=1.2.1" },
@@ -4972,6 +5017,7 @@ requires-dist = [
     { name = "langchain", extras = ["anthropic", "openai"], specifier = ">=0.3.24" },
     { name = "langchain-community", specifier = ">=0.3.23" },
     { name = "langgraph", specifier = ">=0.4.8" },
+    { name = "langgraph-supervisor", specifier = ">=0.0.27" },
     { name = "litellm", specifier = ">=1.72.1" },
     { name = "numpy", specifier = ">=2.2.6" },
     { name = "openai", specifier = ">=1.70.0" },
@@ -4979,6 +5025,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "rich", specifier = ">=14.0.0" },
+    { name = "schedule", specifier = ">=1.2.2" },
     { name = "tenacity", specifier = ">=8.2.3" },
     { name = "tiktoken", specifier = ">=0.9.0" },
     { name = "unstructured", specifier = ">=0.17.2" },
