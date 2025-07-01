@@ -12,6 +12,8 @@ class Config:
     TEMPERATURE: float = 0.3
     MAX_TOKENS: int = 150
 
+    ROOT_DIR: str = os.path.dirname(os.path.abspath(__file__))
+
     # RSS 설정
     RSS_URL: str = "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko"
     MAX_NEWS_COUNT: int = 60
@@ -36,7 +38,7 @@ class Config:
     NEWS_PER_CATEGORY: int = 30  # 카테고리별 표시할 뉴스 수
 
     # 파일 설정
-    OUTPUT_DIR: str = "./outputs"
+    OUTPUT_DIR: str = f"{ROOT_DIR}/outputs"
 
     @classmethod
     def validate(cls) -> bool:
