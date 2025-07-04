@@ -42,8 +42,8 @@ class RSSCollectorAgent:
                     raw_news.append(news_item)
                     print(f"  {idx}. {news_item['title'][:50]}...")
 
-            state["raw_news"] = raw_news
-            state["messages"].append(
+            state.raw_news = raw_news
+            state.messages.append(
                 AIMessage(
                     content=f"RSS 피드에서 {len(raw_news)}개의 뉴스를 수집했습니다."
                 )
@@ -54,7 +54,7 @@ class RSSCollectorAgent:
         except Exception as e:
             error_msg = f"RSS 수집 중 오류: {str(e)}"
             print(f"[{self.name}] {error_msg}")
-            state["error_log"].append(error_msg)
-            state["messages"].append(AIMessage(content=error_msg))
+            state.error_log.append(error_msg)
+            state.messages.append(AIMessage(content=error_msg))
 
         return state

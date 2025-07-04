@@ -56,19 +56,19 @@ class ReportGeneratorAgent:
     def _build_header(self, state: NewsState) -> str:
         """보고서 헤더 생성"""
         current_time = datetime.now().strftime("%Y년 %m월 %d일 %H:%M:%S")
-        total_processed = sum(len(v) for v in state["categorized_news"].values())
+        total_processed = sum(len(v) for v in state.categorized_news.values())
         return f"""# Google News 한국 뉴스 AI 요약 리포트
 
 ## 기본 정보
 - **수집 시간**: {current_time}
 - **RSS 소스**: Google News Korea
-- **수집 뉴스**: {len(state["raw_news"])}건
+- **수집 뉴스**: {len(state.raw_news)}건
 - **처리 완료**: {total_processed}건"""
 
     def _build_statistics(self, state: NewsState) -> str:
         """통계 섹션 생성"""
         category_stats = {
-            cat: len(news_list) for cat, news_list in state["categorized_news"].items()
+            cat: len(news_list) for cat, news_list in state.categorized_news.items()
         }
         total_news = sum(category_stats.values())
         if not total_news:
@@ -80,10 +80,9 @@ class ReportGeneratorAgent:
     def _build_news_sections(self, state: NewsState) -> str:
         """모든 뉴스 섹션 생성"""
         sections = [
-            self._generate_news_section(category, state["categorized_news"][category])
+            self._generate_news_section(category, state.categorized_news[category])
             for category in Config.NEWS_CATEGORIES
-            if category in state["categorized_news"]
-            and state["categorized_news"][category]
+            if category in state.categorized_news and state.categorized_news[category]
         ]
         if not sections:
             return ""
@@ -92,9 +91,9 @@ class ReportGeneratorAgent:
 
     def _build_error_log(self, state: NewsState) -> str:
         """오류 로그 섹션 생성"""
-        if not state.get("error_log"):
+        if not state.error_log:
             return ""
-        errors = "\n".join([f"- {error}" for error in state["error_log"]])
+        errors = "\n".join([f"- {error}" for error in state.error_log])
         return f"## 처리 중 발생한 오류\n\n{errors}"
 
     def _build_footer(self) -> str:
@@ -120,8 +119,8 @@ class ReportGeneratorAgent:
         # 비어 있지 않은 섹션만 필터링하여 최종 보고서 생성
         final_report = "\n\n---\n\n".join(filter(None, report_parts))
 
-        state["final_report"] = final_report
-        state["messages"].append(AIMessage(content="최종 보고서가 생성되었습니다."))
+        state.final_report = final_report
+        state.messages.append(AIMessage(content="최종 보고서가 생성되었습니다."))
 
         print(f"[{self.name}] 보고서 생성 완료")
         return state

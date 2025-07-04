@@ -1,14 +1,17 @@
-from typing import TypedDict, Annotated, List, Dict, Any
+from typing import Annotated, Any
+from pydantic import BaseModel, ConfigDict
 from langchain_core.messages import BaseMessage
 from langgraph.graph.message import add_messages
 
 
-class NewsState(TypedDict):
-    """뉴스 처리 상태를 관리하는 TypedDict"""
+class NewsState(BaseModel):
+    """뉴스 처리 상태를 관리하는 BaseModel"""
 
-    messages: Annotated[List[BaseMessage], add_messages]
-    raw_news: List[Dict[str, Any]]
-    summarized_news: List[Dict[str, Any]]
-    categorized_news: Dict[str, List[Dict[str, Any]]]
-    final_report: str
-    error_log: List[str]
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    messages: Annotated[list[BaseMessage], add_messages] = []
+    raw_news: list[dict[str, Any]] = []
+    summarized_news: list[dict[str, Any]] = []
+    categorized_news: dict[str, list[dict[str, Any]]] = {}
+    final_report: str = ""
+    error_log: list[str] = []

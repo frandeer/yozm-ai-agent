@@ -72,10 +72,10 @@ class NewsSummarizerAgent:
         # 배치 처리
         batch_size = Config.BATCH_SIZE
         summarized_news = []
-        total_news = len(state["raw_news"])
+        total_news = len(state.raw_news)
 
         for i in range(0, total_news, batch_size):
-            batch = state["raw_news"][i : i + batch_size]
+            batch = state.raw_news[i : i + batch_size]
             batch_num = i // batch_size + 1
             total_batches = (total_news + batch_size - 1) // batch_size
 
@@ -94,8 +94,8 @@ class NewsSummarizerAgent:
                 else:
                     summarized_news.append(result)
 
-        state["summarized_news"] = summarized_news
-        state["messages"].append(
+        state.summarized_news = summarized_news
+        state.messages.append(
             AIMessage(content=f"{len(summarized_news)}개의 뉴스 요약을 완료했습니다.")
         )
 

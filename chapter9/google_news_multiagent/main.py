@@ -32,15 +32,14 @@ async def process_news_async() -> NewsState:
     app = create_news_workflow(llm)
 
     # 초기 상태 설정
-    initial_state: NewsState = {
-        "messages": [HumanMessage(content="Google News RSS 처리를 시작합니다.")],
-        "rss_url": Config.RSS_URL,
-        "raw_news": [],
-        "summarized_news": [],
-        "categorized_news": {},
-        "final_report": "",
-        "error_log": [],
-    }
+    initial_state = NewsState(
+        messages=[HumanMessage(content="Google News RSS 처리를 시작합니다.")],
+        raw_news=[],
+        summarized_news=[],
+        categorized_news={},
+        final_report="",
+        error_log=[],
+    )
 
     print("\n" + "=" * 60)
     print("뉴스 처리 시작")

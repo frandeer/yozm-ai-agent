@@ -60,10 +60,10 @@ class NewsOrganizerAgent:
         # 배치 처리
         batch_size = Config.BATCH_SIZE
         results = []
-        total_news = len(state["summarized_news"])
+        total_news = len(state.summarized_news)
 
         for i in range(0, total_news, batch_size):
-            batch = state["summarized_news"][i : i + batch_size]
+            batch = state.summarized_news[i : i + batch_size]
             batch_num = i // batch_size + 1
             total_batches = (total_news + batch_size - 1) // batch_size
 
@@ -87,8 +87,8 @@ class NewsOrganizerAgent:
             if count > 0:
                 print(f"    {category}: {count}건")
 
-        state["categorized_news"] = dict(categorized)
-        state["messages"].append(
+        state.categorized_news = dict(categorized)
+        state.messages.append(
             AIMessage(content=f"뉴스를 {len(categorized)}개 카테고리로 분류했습니다.")
         )
 
