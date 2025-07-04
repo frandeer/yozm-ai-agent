@@ -1,6 +1,5 @@
 # config.py
 import os
-from typing import List
 
 
 class Config:
@@ -20,9 +19,9 @@ class Config:
 
     # 배치 처리 설정
     BATCH_SIZE: int = 10
-    
+
     # 카테고리 설정
-    NEWS_CATEGORIES: List[str] = [
+    NEWS_CATEGORIES: list[str] = [
         "정치",
         "경제",
         "사회",

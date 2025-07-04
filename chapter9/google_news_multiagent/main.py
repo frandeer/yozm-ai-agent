@@ -7,7 +7,7 @@ from langchain_openai import ChatOpenAI
 
 from workflow import create_news_workflow
 from config import Config
-from models.state import NewsState
+from state import NewsState
 
 
 logger = logging.getLogger(__name__)

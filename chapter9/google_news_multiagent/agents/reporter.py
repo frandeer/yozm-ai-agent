@@ -1,12 +1,11 @@
 # agents/reporter.py
 from datetime import datetime
-from typing import Dict, Any, List
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import AIMessage
 
-from models.state import NewsState
+from state import NewsState
 from config import Config
-from utils.text_processing import format_date
+from utils import format_date
 
 
 class ReportGeneratorAgent:
@@ -17,7 +16,7 @@ class ReportGeneratorAgent:
         self.llm = llm
 
     def _generate_statistics_table(
-        self, category_stats: Dict[str, int], total_news: int
+        self, category_stats: dict[str, int], total_news: int
     ) -> str:
         """카테고리별 통계 테이블 생성"""
         table_header = "| 카테고리 | 뉴스 수 | 비율 |\n|---------|--------|------|\n"
@@ -83,7 +82,8 @@ class ReportGeneratorAgent:
         sections = [
             self._generate_news_section(category, state["categorized_news"][category])
             for category in Config.NEWS_CATEGORIES
-            if category in state["categorized_news"] and state["categorized_news"][category]
+            if category in state["categorized_news"]
+            and state["categorized_news"][category]
         ]
         if not sections:
             return ""

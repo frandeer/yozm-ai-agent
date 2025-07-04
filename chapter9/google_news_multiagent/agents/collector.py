@@ -2,8 +2,8 @@
 import feedparser
 from langchain_core.messages import AIMessage
 
-from models.state import NewsState
-from utils.text_processing import clean_html, truncate_text
+from state import NewsState
+from utils import clean_html, truncate_text
 from config import Config
 
 

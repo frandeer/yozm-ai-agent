@@ -9,7 +9,7 @@ from langchain_core.prompts import (
     HumanMessagePromptTemplate,
 )
 
-from models.state import NewsState
+from state import NewsState
 from config import Config
 
 
@@ -93,7 +93,7 @@ class NewsSummarizerAgent:
                     )
                 else:
                     summarized_news.append(result)
-            
+
         state["summarized_news"] = summarized_news
         state["messages"].append(
             AIMessage(content=f"{len(summarized_news)}개의 뉴스 요약을 완료했습니다.")

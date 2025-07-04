@@ -10,7 +10,7 @@ from langchain_core.prompts import (
     HumanMessagePromptTemplate,
 )
 
-from models.state import NewsState
+from state import NewsState
 from config import Config
 
 
