@@ -113,7 +113,11 @@ class RSSCollectorAgent:
             downloaded = trafilatura.fetch_url(original_url)
 
             if downloaded:
-                if "chosun.com" in original_url:
+                # 모바일 헬스 조선은 리액트 아님
+                if (
+                    "m.health.chosun.com" not in original_url
+                    and "chosun.com" in original_url
+                ):
                     content = self.extract_chosun_content(downloaded)
                 else:
                     # ⑤ trafilatura로 일반 기사 추출 (한국어 최적화)
