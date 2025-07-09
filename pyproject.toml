@@ -34,9 +34,8 @@ dependencies = [
     "feedparser>=6.0.11",
     "schedule>=1.2.2",
     "langgraph-supervisor>=0.0.27",
-    "newspaper3k>=0.2.8",
     "trafilatura>=2.0.0",
-    "playwright>=1.53.0",
+    "beautifulsoup4>=4.13.4",
 ]
 
 [dependency-groups]

@@ -46,7 +46,7 @@ class NewsOrganizerAgent:
         response = await chain.ainvoke(
             {
                 "title": news_item["title"],
-                "summary": news_item.get("ai_summary", news_item["summary"]),
+                "summary": news_item.get("ai_summary", news_item["content"]),
             }
         )
 
@@ -77,7 +77,11 @@ class NewsOrganizerAgent:
 
         # 카테고리별로 그룹화
         categorized = defaultdict(list)
-        for category, news in results:
+        for result in results:
+            if isinstance(result, Exception):
+                print(f"    분류 작업 실패: {result}")
+                continue
+            category, news = result
             categorized[category].append(news)
 
         # 카테고리별 통계 출력

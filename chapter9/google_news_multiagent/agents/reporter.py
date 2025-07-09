@@ -36,13 +36,13 @@ class ReportGeneratorAgent:
 
         news_items = []
         for i, news in enumerate(news_list[:display_count], 1):
-            pub_date = format_date(news.get("published", ""))
+            pub_date = format_date(news.get("published_kst", ""))
             news_item = f"""#### {i}. {news["title"]}
 
 - **출처**: {news["source"]}
 - **발행**: {pub_date}
-- **요약**: {news.get("ai_summary", news["summary"])}
-- **링크**: [기사 보기]({news["link"]})
+- **요약**: {news.get("ai_summary", news["content"])}
+- **링크**: [기사 보기]({news["original_url"]})
 """
             news_items.append(news_item)
 

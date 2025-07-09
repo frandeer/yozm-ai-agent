@@ -36,16 +36,17 @@ class NewsSummarizerAgent:
 
     async def summarize_single_news(self, news_item: Dict[str, Any]) -> Dict[str, Any]:
         """단일 뉴스 요약"""
+        content = news_item.get("content")
         try:
-            # 내용이 너무 짧으면 원본 사용
-            if len(news_item["summary"]) < 50:
-                return {**news_item, "ai_summary": news_item["summary"]}
+            # 내용이 없거나 너무 짧으면 원본 사용
+            if not content or len(content) < 50:
+                return {**news_item, "ai_summary": content or ""}
 
             chain = self.prompt | self.llm
             summary_response = await chain.ainvoke(
                 {
                     "title": news_item["title"],
-                    "content": news_item["raw_summary"][:500],
+                    "content": content[:500],
                 }
             )
 
@@ -53,16 +54,16 @@ class NewsSummarizerAgent:
 
             return {
                 **news_item,
-                "ai_summary": summary if summary else news_item["summary"],
+                "ai_summary": summary if summary else content,
             }
 
         except Exception as e:
             print(
-                f"  [{self.name}] 요약 오류 (ID: {news_item['id']}): {str(e)[:50]}..."
+                f"  [{self.name}] 요약 오류 (Title: {news_item['title']}): {str(e)[:50]}..."
             )
             return {
                 **news_item,
-                "ai_summary": news_item["summary"],  # 오류 시 원본 사용
+                "ai_summary": content or "",  # 오류 시 원본 사용
             }
 
     async def summarize_news(self, state: NewsState) -> NewsState:
@@ -87,9 +88,9 @@ class NewsSummarizerAgent:
             # 예외 처리
             for idx, result in enumerate(batch_results):
                 if isinstance(result, Exception):
-                    print(f"    뉴스 {batch[idx]['id']} 요약 실패")
+                    print(f"    뉴스 '{batch[idx]['title']}' 요약 실패")
                     summarized_news.append(
-                        {**batch[idx], "ai_summary": batch[idx]["summary"]}
+                        {**batch[idx], "ai_summary": batch[idx]["content"]}
                     )
                 else:
                     summarized_news.append(result)
