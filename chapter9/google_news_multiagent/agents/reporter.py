@@ -5,7 +5,6 @@ from langchain_core.messages import AIMessage
 
 from state import NewsState
 from config import Config
-from utils import format_date
 
 
 class ReportGeneratorAgent:
@@ -36,7 +35,7 @@ class ReportGeneratorAgent:
 
         news_items = []
         for i, news in enumerate(news_list[:display_count], 1):
-            pub_date = format_date(news.get("published_kst", ""))
+            pub_date = news.get("published_kst", "")
             news_item = f"""#### {i}. {news["title"]}
 
 - **출처**: {news["source"]}
