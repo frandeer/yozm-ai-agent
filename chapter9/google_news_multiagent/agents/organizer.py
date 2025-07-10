@@ -23,7 +23,7 @@ class NewsOrganizerAgent:
         주어진 뉴스를 다음 카테고리 중 하나로 정확히 분류해주세요:
         {", ".join(Config.NEWS_CATEGORIES)}
         
-        반드시 위 카테고리 중 하나만 선택하세요."""
+        반드시 위 카테고리 중 하나만 선택하고, 카테고리 값만 반환하세요."""
 
         self.categorize_prompt = ChatPromptTemplate.from_messages(
             [

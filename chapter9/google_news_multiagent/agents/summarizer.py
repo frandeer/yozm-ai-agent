@@ -72,7 +72,7 @@ class NewsSummarizerAgent:
         for i in range(0, total_news, batch_size):
             batch = raw_news[i : i + batch_size]
             batch_num = i // batch_size + 1
-            total_batches = total_news + batch_size - 1
+            total_batches = (total_news + batch_size - 1) // batch_size
 
             print(f"  배치 {batch_num}/{total_batches} 처리 중...")
 

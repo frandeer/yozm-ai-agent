@@ -1,4 +1,3 @@
-# agents/reporter.py
 from datetime import datetime
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import AIMessage
@@ -19,8 +18,8 @@ class ReportGeneratorAgent:
         print(f"\n[{self.name}] 보고서 생성 시작...")
         report_parts = []
 
-        # 1. 헤더 생성
         current_time = datetime.now().strftime("%Y년 %m월 %d일 %H:%M:%S")
+        # ① 모든 카테고리의 뉴스 개수를 합산하여 처리된 총 뉴스 수 계산
         total_processed = sum(len(v) for v in state.categorized_news.values())
         header = f"""# Google News 한국 뉴스 AI 요약 리포트
 
@@ -31,15 +30,18 @@ class ReportGeneratorAgent:
 - **처리 완료**: {total_processed}건"""
         report_parts.append(header)
 
-        # 2. 통계 섹션 생성
+        # 통계 섹션
+        # ② 딕셔너리 컴프리헨션으로 각 카테고리별 뉴스 개수 집계
         category_stats = {
             cat: len(news) for cat, news in state.categorized_news.items()
         }
         total_news = sum(category_stats.values())
         if total_news > 0:
+            # ③ 마크다운 테이블 헤더 생성 (파이프 문자로 열 구분)
             table_header = (
                 "| 카테고리 | 뉴스 수 | 비율 |\n|---------|--------|------|\n"
             )
+            # ④ 뉴스 수가 많은 순으로 정렬하여 테이블 행 생성
             table_rows = [
                 f"| {cat} | {count}건 | {(count / total_news) * 100:.1f}% |"
                 for cat, count in sorted(
@@ -51,13 +53,16 @@ class ReportGeneratorAgent:
             stats_section = f"## 카테고리별 뉴스 분포\n\n{stats_table}"
             report_parts.append(stats_section)
 
-        # 3. 카테고리별 뉴스 섹션 생성
+        # 카테고리별 뉴스 섹션 생성
         news_sections = []
         for category in Config.NEWS_CATEGORIES:
+            # ⑤ Walrus 연산자(:=)로 할당과 조건 검사를 동시에 수행
             if news_list := state.categorized_news.get(category):
                 section_header = f"### {category} ({len(news_list)}건)\n"
+                # ⑥ 카테고리별 표시 개수 제한 (Config.NEWS_PER_CATEGORY = 30)
                 display_count = min(len(news_list), Config.NEWS_PER_CATEGORY)
 
+                # ⑦ enumerate로 순번 매기며 뉴스 항목 문자열 생성
                 news_items_str = "\n".join(
                     f"""#### {i}. {news["title"]}
 - **출처**: {news["source"]}
@@ -67,21 +72,19 @@ class ReportGeneratorAgent:
                     for i, news in enumerate(news_list[:display_count], 1)
                 )
 
-                remaining = len(news_list) - display_count
-                footer = f"\n*... 외 {remaining}건의 뉴스*\n" if remaining > 0 else ""
-                news_sections.append(f"{section_header}\n{news_items_str}{footer}")
+                news_sections.append(f"{section_header}\n{news_items_str}")
 
         if news_sections:
+            # ⑧ 각 카테고리 섹션을 구분선(---)으로 연결
             report_parts.append(
                 "## 카테고리별 주요 뉴스\n\n" + "\n\n---\n\n".join(news_sections)
             )
 
-        # 4. 오류 로그 섹션 생성
         if state.error_log:
             errors = "\n".join([f"- {error}" for error in state.error_log])
             report_parts.append(f"## 처리 중 발생한 오류\n\n{errors}")
 
-        # 5. 푸터 생성
+        # 푸터 생성
         footer = """## 참고사항
 - 이 보고서는 AI(LangGraph + LangChain)를 활용하여 자동으로 생성되었습니다.
 - 뉴스 요약은 OpenAI GPT 모델을 사용하여 작성되었습니다.
@@ -90,9 +93,7 @@ class ReportGeneratorAgent:
         report_parts.append(footer)
 
         # 최종 보고서 조합
-        final_report = "\n\n---\n\n".join(filter(None, report_parts))
-
-        state.final_report = final_report
+        state.final_report = "\n\n---\n\n".join(report_parts)
         state.messages.append(AIMessage(content="최종 보고서가 생성되었습니다."))
 
         print(f"[{self.name}] 보고서 생성 완료")

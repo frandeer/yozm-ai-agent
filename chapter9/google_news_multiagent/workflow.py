@@ -1,4 +1,3 @@
-# workflow.py
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END
 
@@ -11,9 +10,9 @@ from config import Config
 
 
 def create_news_workflow(llm: ChatOpenAI = None) -> StateGraph:
-    """뉴스 처리 워크플로우 생성"""
+    """뉴스 처리 워크플로우 생성 - RSS 수집 → AI 요약 → 카테고리 분류 → 보고서 생성"""
 
-    # LLM이 제공되지 않으면 기본 설정으로 생성
+    # ① LLM이 제공되지 않으면 Config 설정으로 기본 LLM 생성
     if llm is None:
         llm = ChatOpenAI(
             model=Config.MODEL_NAME,
@@ -22,27 +21,27 @@ def create_news_workflow(llm: ChatOpenAI = None) -> StateGraph:
             api_key=Config.OPENAI_API_KEY,
         )
 
-    # 에이전트 인스턴스 생성
-    collector = RSSCollectorAgent()
-    summarizer = NewsSummarizerAgent(llm)
-    organizer = NewsOrganizerAgent(llm)
-    reporter = ReportGeneratorAgent(llm)
+    # ② 각 작업을 담당할 4개의 전문 에이전트 인스턴스 생성
+    collector = RSSCollectorAgent()  # RSS 피드 수집 전담
+    summarizer = NewsSummarizerAgent(llm)  # AI 요약 생성 전담
+    organizer = NewsOrganizerAgent(llm)  # 카테고리 분류 전담
+    reporter = ReportGeneratorAgent(llm)  # 보고서 작성 전담
 
-    # 상태 그래프 생성
+    # ③ NewsState를 공유 상태로 사용하는 워크플로우 그래프 생성
     workflow = StateGraph(NewsState)
 
-    # 노드 추가
+    # ④ 각 에이전트의 메서드를 워크플로우 노드로 등록
     workflow.add_node("collect", collector.collect_rss)
     workflow.add_node("summarize", summarizer.summarize_news)
     workflow.add_node("organize", organizer.organize_news)
     workflow.add_node("report", reporter.generate_report)
 
-    # 엣지 정의 (워크플로우 순서)
-    workflow.set_entry_point("collect")
-    workflow.add_edge("collect", "summarize")
-    workflow.add_edge("summarize", "organize")
-    workflow.add_edge("organize", "report")
-    workflow.add_edge("report", END)
+    # ⑤ 워크플로우 실행 순서 정의 (순차적 파이프라인)
+    workflow.set_entry_point("collect")  # 시작점 설정
+    workflow.add_edge("collect", "summarize")  # 수집 → 요약
+    workflow.add_edge("summarize", "organize")  # 요약 → 분류
+    workflow.add_edge("organize", "report")  # 분류 → 보고서
+    workflow.add_edge("report", END)  # 보고서 → 종료
 
-    # 컴파일된 워크플로우 반환
+    # ⑥ 실행 가능한 워크플로우 객체로 컴파일하여 반환
     return workflow.compile()
