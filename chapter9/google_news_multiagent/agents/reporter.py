@@ -1,5 +1,4 @@
 from datetime import datetime
-from langchain_openai import ChatOpenAI
 from langchain_core.messages import AIMessage
 
 from state import NewsState
