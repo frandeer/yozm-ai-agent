@@ -9,9 +9,8 @@ from config import Config
 class ReportGeneratorAgent:
     """최종 보고서를 생성하는 에이전트"""
 
-    def __init__(self, llm: ChatOpenAI):
+    def __init__(self):
         self.name = "Report Generator"
-        self.llm = llm
 
     async def generate_report(self, state: NewsState) -> NewsState:
         """최종 보고서 생성"""
