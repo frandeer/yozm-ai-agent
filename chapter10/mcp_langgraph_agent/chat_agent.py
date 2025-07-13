@@ -1,0 +1,113 @@
+from contextlib import asynccontextmanager
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from langgraph.prebuilt import create_react_agent
+from langgraph.checkpoint.memory import InMemorySaver
+from langchain_openai import ChatOpenAI
+from langchain_mcp_adapters.tools import load_mcp_tools
+from langchain_core.messages import HumanMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from mcp import ClientSession
+from mcp.client.streamable_http import streamablehttp_client
+
+# 에이전트를 저장할 전역 변수
+agent_executor = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """FastAPI 애플리케이션의 생명주기 동안 MCP 연결 및 에이전트 설정을 관리합니다."""
+    global agent_executor
+    print("애플리케이션 시작: MCP 서버에 연결하고 에이전트를 설정합니다...")
+
+    # streamablehttp_client를 사용하여 MCP 서버와 세션을 설정합니다.
+    async with streamablehttp_client("http://localhost:8000/mcp") as (read, write, _):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            tools = await load_mcp_tools(session)
+
+            # 대화 기록 저장을 위한 메모리 및 체크포인터 설정
+            memory = InMemorySaver()
+
+            # 시스템 프롬프트가 포함된 프롬프트 템플릿 생성
+            system_prompt = """당신은 친절하고 도움이 되는 AI 어시스턴트 "금토깽"입니다. 
+
+다음과 같은 도구들을 활용하여 사용자를 도와드릴 수 있습니다:
+- 웹페이지의 텍스트 콘텐츠를 스크랩하여 정보를 가져올 수 있습니다
+- 도시 이름을 받아 해당 도시의 현재 날씨 정보를 제공할 수 있습니다
+- 구글 RSS 피드에서 최신 뉴스와 URL을 가져올 수 있습니다
+- 한국 프로야구 구단의 랭킹 정보를 제공할 수 있습니다
+- 일정과 스케줄 정보를 확인할 수 있습니다
+- 사용자에게 영감을 주는 명언을 제공할 수 있습니다
+
+사용자와의 대화에서 다음 원칙을 지켜주세요:
+1. 항상 친절하고 정중한 태도로 응답해주세요
+2. 사용자의 질문을 정확히 이해하고 관련된 도구를 적절히 활용해주세요
+3. 최신 뉴스를 요청받으면, 도구의 출력을 그대로 출력하면 됩니다.
+4. 응답은 명확하고 이해하기 쉽게 구성해주세요
+5. 필요시 추가 정보나 설명을 제공하여 사용자에게 더 나은 도움을 주세요
+6. 링크가 포함된 정보를 제공할 때는 [제목](URL) 형태의 마크다운 링크로 제공해주세요
+"""
+
+            prompt = ChatPromptTemplate.from_messages(
+                [
+                    ("system", system_prompt),
+                    MessagesPlaceholder(variable_name="messages"),
+                ]
+            )
+
+            # LLM 및 체크포인터가 적용된 에이전트 설정
+            llm = ChatOpenAI(model="gpt-4o", temperature=0)
+            agent_executor = create_react_agent(
+                llm, tools, checkpointer=memory, prompt=prompt
+            )
+
+            print("에이전트 설정 완료. 애플리케이션이 준비되었습니다.")
+            yield
+
+    print("애플리케이션 종료.")
+    agent_executor = None
+
+
+# lifespan 관리자를 사용하여 FastAPI 앱 인스턴스 생성
+app = FastAPI(lifespan=lifespan)
+templates = Jinja2Templates(directory="chapter10/mcp_langgraph_agent/templates")
+
+
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request):
+    """메인 채팅 페이지를 렌더링합니다."""
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.post("/chat")
+async def chat(message: str = Form(...), session_id: str = Form(...)):
+    """사용자 메시지를 받아 에이전트를 실행하고 대화 기록을 관리합니다."""
+    if agent_executor is None:
+        return {
+            "response": "에이전트가 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요."
+        }
+
+    try:
+        # 클라이언트에서 전송된 세션 ID를 thread_id로 사용
+        config = {"configurable": {"thread_id": session_id}}
+        print(f"세션 ID: {session_id}")
+
+        # 사용자 메시지를 HumanMessage 객체로 변환하여 에이전트 호출
+        input_message = HumanMessage(content=message)
+        response = await agent_executor.ainvoke(
+            {"messages": [input_message]}, config=config
+        )
+
+        final_response = response["messages"][-1].content
+        return {"response": final_response}
+    except Exception as e:
+        print(f"Error during agent invocation: {e}")
+        return {"response": f"오류가 발생했습니다: {e}"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8001)
