@@ -7,7 +7,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from mcp.server.fastmcp import FastMCP
 from geopy.geocoders import Nominatim
 
-# FastAPI 기반 MCP 서버 생성 (서버 이름 "Yozm-ai-agent")
 mcp = FastMCP("Yozm-ai-agent")
 
 
@@ -111,6 +110,20 @@ def daily_quote() -> str:
     chain = prompt | chat_model
     response = chain.invoke({})
     return response.content
+
+
+@mcp.tool()
+def brief_today() -> str:
+    """사용자의 하루 시작을 돕기 위해 날씨, 뉴스, 일정 등을 종합하여 전달합니다."""
+    return """
+다음을 순서대로 실행하고, 실행한 결과를 사용자에게 알려주세요. 
+첫째로 사용자가 위치한 도시를 파악하세요. 위치를 모른다면, 사용자에게 질문하세요.
+둘째로 사용자의 위치를 기반으로 get_weather() 도구를 호출하여 날씨 정보를 찾아서 제공합니다. 
+셋째로 get_news_headlines 도구를 사용하여 오늘의 주요 뉴스를 출력합니다. 
+넷째로 get_kbo_rank 도구를 사용하여 현재 시간 프로야구 랭킹 및 전적을 함께 출력합니다. 
+다섯째로 today_schedule 도구를 사용하여 오늘 사용자의 일정을 알려줍니다. 
+마지막으로 daily_quote 을 사용하여 명언을 출력하고, 따뜻한 말한마디를 덧붙입니다. 
+"""
 
 
 if __name__ == "__main__":
