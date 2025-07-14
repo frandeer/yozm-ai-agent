@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import InMemorySaver
@@ -71,6 +72,10 @@ async def lifespan(app: FastAPI):
 
 # lifespan 관리자를 사용하여 FastAPI 앱 인스턴스 생성
 app = FastAPI(lifespan=lifespan)
+
+# 정적 파일 마운트
+static_path = Path(__file__).resolve().parent / "static"
+app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 # chat_agent.py 파일의 위치를 기준으로 templates 디렉토리의 절대 경로를 계산
 templates_path = Path(__file__).resolve().parent / "templates"
