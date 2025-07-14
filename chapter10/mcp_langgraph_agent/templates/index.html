@@ -163,14 +163,7 @@
         function appendMessage(sender, text) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
-            
-            if (sender === 'bot') {
-                // marked.js를 사용하여 마크다운을 HTML로 변환
-                messageElement.innerHTML = marked.parse(text);
-            } else {
-                messageElement.innerText = text;
-            }
-            
+            messageElement.innerHTML = marked.parse(text);
             chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
