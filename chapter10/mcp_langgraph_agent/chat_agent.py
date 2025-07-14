@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -72,7 +73,11 @@ async def lifespan(app: FastAPI):
 
 # lifespan 관리자를 사용하여 FastAPI 앱 인스턴스 생성
 app = FastAPI(lifespan=lifespan)
-templates = Jinja2Templates(directory="chapter10/mcp_langgraph_agent/templates")
+
+# chat_agent.py 파일의 위치를 기준으로 templates 디렉토리의 절대 경로를 계산합니다.
+# 이렇게 하면 스크립트가 어디에서 실행되든 항상 올바른 경로를 참조할 수 있습니다.
+templates_path = Path(__file__).resolve().parent / "templates"
+templates = Jinja2Templates(directory=templates_path)
 
 
 @app.get("/", response_class=HTMLResponse)
