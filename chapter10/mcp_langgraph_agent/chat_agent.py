@@ -22,22 +22,17 @@ async def lifespan(app: FastAPI):
     global agent_executor
     print("애플리케이션 시작: MCP 서버에 연결하고 에이전트를 설정합니다...")
 
-    try:
-        # streamablehttp_client를 사용하여 MCP 서버와 세션을 설정합니다.
-        async with streamablehttp_client("http://localhost:8000/mcp") as (
-            read,
-            write,
-            _,
-        ):
-            async with ClientSession(read, write) as session:
-                await session.initialize()
-                tools = await load_mcp_tools(session)
+    # streamablehttp_client를 사용하여 MCP 서버와 세션을 설정합니다.
+    async with streamablehttp_client("http://localhost:8000/mcp") as (read, write, _):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            tools = await load_mcp_tools(session)
 
-                # 대화 기록 저장을 위한 메모리 및 체크포인터 설정
-                memory = InMemorySaver()
+            # 대화 기록 저장을 위한 메모리 및 체크포인터 설정
+            memory = InMemorySaver()
 
-                # 시스템 프롬프트가 포함된 프롬프트 템플릿 생성
-                system_prompt = """당신은 친절하고 도움이 되는 AI 어시스턴트 "금토깽"입니다. 
+            # 시스템 프롬프트가 포함된 프롬프트 템플릿 생성
+            system_prompt = """당신은 친절하고 도움이 되는 AI 어시스턴트 "금토깽"입니다. 
 
 다음과 같은 도구들을 활용하여 사용자를 도와드릴 수 있습니다:
 - 웹페이지의 텍스트 콘텐츠를 스크랩하여 정보를 가져올 수 있습니다
@@ -46,6 +41,8 @@ async def lifespan(app: FastAPI):
 - 한국 프로야구 구단의 랭킹 정보를 제공할 수 있습니다
 - 일정과 스케줄 정보를 확인할 수 있습니다
 - 사용자에게 영감을 주는 명언을 제공할 수 있습니다
+- 사용자의 하루 일정 준비를 도와주는 브리핑 기능이 있습니다. 
+  사용자가 위치한 곳을 안다면 바로 brief_today() 도구의 지침을 따르면 됩니다. 아니라면, 위치를 물어보고나서 도구의 지침을 따릅니다. 
 
 사용자와의 대화에서 다음 원칙을 지켜주세요:
 1. 항상 친절하고 정중한 태도로 응답해주세요
@@ -56,27 +53,21 @@ async def lifespan(app: FastAPI):
 6. 링크가 포함된 정보를 제공할 때는 [제목](URL) 형태의 마크다운 링크로 제공해주세요
 """
 
-                prompt = ChatPromptTemplate.from_messages(
-                    [
-                        ("system", system_prompt),
-                        MessagesPlaceholder(variable_name="messages"),
-                    ]
-                )
+            prompt = ChatPromptTemplate.from_messages(
+                [
+                    ("system", system_prompt),
+                    MessagesPlaceholder(variable_name="messages"),
+                ]
+            )
 
-                # LLM 및 체크포인터가 적용된 에이전트 설정
-                llm = ChatOpenAI(model="gpt-4.1", temperature=0)
-                agent_executor = create_react_agent(
-                    llm, tools, checkpointer=memory, prompt=prompt
-                )
+            # LLM 및 체크포인터가 적용된 에이전트 설정
+            llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0)
+            agent_executor = create_react_agent(
+                llm, tools, checkpointer=memory, prompt=prompt
+            )
 
-                print("에이전트 설정 완료. 애플리케이션이 준비되었습니다.")
-    except Exception as e:
-        print(f"MCP 서버 연결 또는 에이전트 설정 중 오류 발생: {e}")
-        print("MCP 서버가 http://localhost:8000/mcp 에서 실행 중인지 확인해주세요.")
-        # 에이전트 설정을 None으로 유지하여 앱이 에이전트 없이 시작되도록 합니다.
-        agent_executor = None
-
-    yield
+            print("에이전트 설정 완료. 애플리케이션이 준비되었습니다.")
+            yield
 
     print("애플리케이션 종료.")
     agent_executor = None
