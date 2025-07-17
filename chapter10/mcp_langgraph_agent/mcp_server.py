@@ -7,9 +7,11 @@ from langchain_core.prompts import ChatPromptTemplate
 from mcp.server.fastmcp import FastMCP
 from geopy.geocoders import Nominatim
 
+# ① MCP 서버 인스턴스 생성
 mcp = FastMCP("Yozm-ai-agent")
 
 
+# ② 웹페이지 스크래핑 도구
 @mcp.tool()
 def scrape_page_text(url: str) -> str:
     """웹페이지의 텍스트 콘텐츠를 스크랩합니다."""
@@ -21,10 +23,11 @@ def scrape_page_text(url: str) -> str:
     # body 태그에서 텍스트를 추출하고 공백을 정리합니다.
     if soup.body:
         text = soup.body.get_text(separator=" ", strip=True)
-        return " ".join(text.split())
+        return " ".join(text.split())  # 연속된 공백 제거
     return ""
 
 
+# ③ 도시명을 좌표로 변환하는 헬퍼 함수
 def get_coordinates(city_name: str) -> tuple[float, float]:
     """도시 이름을 받아 위도와 경도를 반환합니다."""
     geolocator = Nominatim(user_agent="weather_app_langgraph")
@@ -46,6 +49,7 @@ def get_weather(city_name: str) -> str:
     return json.dumps(result)
 
 
+# ④ 구글 뉴스 헤드라인 수집 도구
 @mcp.tool()
 def get_news_headlines() -> str:
     """구글 RSS피드에서 최신 뉴스와 URL을 반환합니다."""
@@ -78,6 +82,7 @@ def get_news_headlines() -> str:
     return "\n".join(news_list)
 
 
+# ⑤ KBO 프로야구 순위 조회 도구
 @mcp.tool()
 def get_kbo_rank() -> str:
     """한국 프로야구 구단의 랭킹을 가져옵니다"""
@@ -87,6 +92,7 @@ def get_kbo_rank() -> str:
     return result.text
 
 
+# ⑥ 하드코딩된 일정 반환 도구
 @mcp.tool()
 def today_schedule() -> str:
     """임의의 스케줄을 반환합니다."""
@@ -94,6 +100,7 @@ def today_schedule() -> str:
     return " | ".join(events)
 
 
+# ⑦ LLM을 활용한 명언 생성 도구
 @mcp.tool()
 def daily_quote() -> str:
     """사용자에게 영감을 주는 명언을 출력합니다"""
@@ -112,6 +119,7 @@ def daily_quote() -> str:
     return response.content
 
 
+# ⑧ 종합 브리핑 도구 (다른 도구들을 순차적으로 호출)
 @mcp.tool()
 def brief_today() -> str:
     """사용자의 하루 시작을 돕기 위해 날씨, 뉴스, 일정 등을 종합하여 전달합니다."""
@@ -145,6 +153,7 @@ def brief_today() -> str:
 """
 
 
+# ⑨ 메인 실행 부분
 if __name__ == "__main__":
     # MCP 서버 실행 (HTTP 스트리밍 모드, 포트 8000)
     mcp.run(transport="streamable-http")

@@ -2634,6 +2634,12 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/97/fc/80e655c955137393c443842ffcc4feccab5b12fa7cb8de9ced90f90e6998/mcp-1.9.4-py3-none-any.whl", hash = "sha256:7fcf36b62936adb8e63f89346bccca1268eeca9bf6dfb562ee10b1dfbda9dac0", size = 130232 },
 ]
 
+[package.optional-dependencies]
+cli = [
+    { name = "python-dotenv" },
+    { name = "typer" },
+]
+
 [[package]]
 name = "mdurl"
 version = "0.1.2"
@@ -5119,6 +5125,7 @@ dependencies = [
     { name = "langgraph" },
     { name = "langgraph-supervisor" },
     { name = "litellm" },
+    { name = "mcp", extra = ["cli"] },
     { name = "numpy" },
     { name = "openai" },
     { name = "openai-agents" },
@@ -5161,6 +5168,7 @@ requires-dist = [
     { name = "langgraph", specifier = ">=0.4.8" },
     { name = "langgraph-supervisor", specifier = ">=0.0.27" },
     { name = "litellm", specifier = ">=1.72.1" },
+    { name = "mcp", extras = ["cli"], specifier = ">=1.9.4" },
     { name = "numpy", specifier = ">=2.2.6" },
     { name = "openai", specifier = ">=1.70.0" },
     { name = "openai-agents", specifier = ">=0.0.12" },
