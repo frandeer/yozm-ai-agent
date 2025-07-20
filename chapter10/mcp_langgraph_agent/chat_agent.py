@@ -116,6 +116,8 @@ async def stream_agent_response(agent_executor, message: str, session_id: str):
             elif kind == "on_tool_end":
                 # TODO: 도구 사용 완료를 클라이언트에 알릴 수 있습니다.
                 print(f"Tool end: {event['name']}")
+            else:
+                print(event)
 
     except Exception as e:
         print(f"스트리밍 중 오류 발생: {e}")
