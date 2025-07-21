@@ -1,7 +1,7 @@
 from google.adk.agents import Agent
 import httpx
 from pydantic import BaseModel, Field
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 
 class BookRecommendation(BaseModel):
@@ -17,12 +17,13 @@ class BookList(BaseModel):
     total_count: int
 
 
-# ① 베스트 셀러 도서 정보를 가져오는 함수 (도구)
-def get_book_search() -> Dict[str, Any]:
-    """책 추천을 위한 도구 함수. 교보문고의 컴퓨터/IT 베스트 셀러 정보 20개를 가져옵니다."""
-    result: httpx.Response = httpx.get(
-        "https://store.kyobobook.co.kr/api/gw/best/best-seller/online?period=002&dsplDvsnCode=001&dsplTrgtDvsnCode=004&saleCmdtClstCode=33&per=20"
-    )
+# ① 최신 IT 도서 정보를 가져오는 함수 (도구)
+def get_book_search(search_keyword: Optional[str] = None) -> Dict[str, Any]:
+    """최신 IT 도서 정보를 가져옵니다. 키워드가 없으면 신간 도서 목록을 가져옵니다."""
+    if search_keyword:
+        result = httpx.get(f"https://api.itbook.store/1.0/search/{search_keyword}")
+    else:
+        result = httpx.get("https://api.itbook.store/1.0/new")
     return result.json()
 
 
