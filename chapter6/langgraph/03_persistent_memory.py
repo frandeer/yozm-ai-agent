@@ -18,7 +18,7 @@ class MemoryBotState(BaseModel):
 
 
 # LangChain LLM 초기화
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)
+llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)
 
 
 # ③ 메시지 처리 노드

@@ -7,7 +7,7 @@ from langchain_core.output_parsers import StrOutputParser
 prompt = ChatPromptTemplate.from_template(
     "주어진 '{word}'와 유사한 단어 3가지를 나열해주세요. 단어만 나열합니다."
 )
-model = ChatOpenAI(temperature=1.0, model="gpt-4o-mini")
+model = ChatOpenAI(temperature=1.0, model="gpt-4.1-mini")
 parser = StrOutputParser()
 
 # ① 병렬처리 체인 구성

@@ -4,7 +4,7 @@ from openai import OpenAI
 client = OpenAI()  # OpenAI 클라이언트 초기화
 
 
-def get_responses(prompt, model="gpt-4o-mini"):
+def get_responses(prompt, model="gpt-4.1-mini"):
     # ① 입력된 프롬프트에 대한 AI 응답을 받아오는 함수
     # prompt: 사용자 입력 텍스트
     # model: 사용할 AI 모델 (기본값: gpt-4.1-mini)
