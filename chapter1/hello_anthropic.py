@@ -1,6 +1,6 @@
 import anthropic
 
-client = anthropic.Anthropic(api_key="API키를 넣으세요")
+client = anthropic.Anthropic()
 
 # ① 대화 기록을 저장할 리스트
 conversation = []
