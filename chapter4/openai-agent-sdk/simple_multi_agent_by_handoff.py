@@ -2,7 +2,7 @@ import asyncio
 from agents import Agent, Runner
 
 async def simple_handoff_example():
-    print("Agnet 병원 안내 시스템\n")
+    print("Agent 병원 안내 시스템\n")
     print("=" * 50)
     
     # ① 정형외과 전문의 에이전트
