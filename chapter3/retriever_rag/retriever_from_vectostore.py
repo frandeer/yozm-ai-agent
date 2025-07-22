@@ -47,7 +47,7 @@ for i, doc in enumerate(results, 1):
 
 
 # ③ 리트리버를 사용한 LLM 호출
-llm = ChatOpenAI(model_name="gpt-4o-mini")
+llm = ChatOpenAI(model_name="gpt-4.1-mini")
 message = """
 질문에 대한 답변을 작성할 때, 리트리버에서 가져온 문서를 참고하여 답변을 작성하세요.
 
