@@ -45,7 +45,7 @@ while (user_input := input("\n가위/바위/보: ")) != "q":
     if ai_msg.tool_calls:
         print(type(rps))
         llm_choice = rps.invoke("")  # ⑦ Tool 호출 실행
-        print(f"🤖 LLM이 선택한 도구: {llm_choice}")
+        print(f"LLM이 선택한 도구: {llm_choice}")
         result = judge(user_input, llm_choice)
 
         print(f"승부: {result}")  # 기존 print(f"{result}") 보다 명확하게
@@ -56,7 +56,7 @@ while (user_input := input("\n가위/바위/보: ")) != "q":
             f"사용자: {user_input}, AI: {llm_choice}, 결과: 사용자의 {result}"
         )
         print(final)
-        print(f"🤖 LLM 해설: {final.content}")
+        print(f"LLM 해설: {final.content}")
         print(f"게임 요약: 당신({user_input}) vs AI({llm_choice}) => {result}")
     else:
         print("Tool 호출 실패")

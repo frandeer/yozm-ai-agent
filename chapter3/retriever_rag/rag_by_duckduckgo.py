@@ -33,7 +33,7 @@ class RealtimeWebRAG:
     def answer(self, question):
         """실시간 검색 후 답변 생성"""
         # 1. 웹 검색
-        print(f"🔍 검색 중: {question}")
+        print(f"검색 중: {question}")
         search_results = self.search.run(question)
         time.sleep(5)  # 5초 대기로 rate limit 방지
 

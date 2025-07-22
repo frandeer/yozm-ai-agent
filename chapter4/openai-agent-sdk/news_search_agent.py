@@ -12,7 +12,7 @@ def news_search(query: str) -> str:
 
         # 검색 결과가 있는 경우 포맷팅
         if results:
-            return f"🔍 '{query}' 검색 결과:\n{results}"
+            return f"'{query}' 검색 결과:\n{results}"
         else:
             return "검색 결과가 없습니다."
 
