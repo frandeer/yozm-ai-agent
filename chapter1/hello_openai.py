@@ -8,7 +8,8 @@ load_dotenv()
 # ② OpenAI API 키 가져오기
 api_key = os.environ.get("OPENAI_API_KEY")
 # ③ OpenAI 클라이언트 초기화
-client = OpenAI()
+#  client = OpenAI() # 이렇게 해도 문제 없음
+client = OpenAI(api_key=api_key)
 
 
 def get_chat_completion(prompt, model="o3-mini"):

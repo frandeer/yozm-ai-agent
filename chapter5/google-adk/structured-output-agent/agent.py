@@ -19,7 +19,7 @@ class BookList(BaseModel):
 # ② 구조화된 출력을 생성하는 에이전트
 root_agent = Agent(
     name="book_recommender",
-    model="gemini-2.5-flash-preview-05-20",
+    model="gemini-2.5-flash",
     description="책을 추천하고 구조화된 형식으로 반환",
     instruction="""
     사용자의 관심사에 맞는 책을 추천하세요.

@@ -30,7 +30,7 @@ def get_book_search(search_keyword: Optional[str] = None) -> Dict[str, Any]:
 # ② 도서 정보를 검색하는 에이전트
 book_data_agent = Agent(
     name="book_data_finder",
-    model="gemini-2.5-flash-preview-05-20",
+    model="gemini-2.5-flash",
     description="최신 도서 정보를 조회하는 에이전트",
     instruction="""
     사용자의 관심사에 맞는 최신 도서 정보를 조회하세요.
@@ -44,7 +44,7 @@ book_data_agent = Agent(
 # ③ 구조화된 출력을 생성하는 에이전트
 structured_output_agent = Agent(
     name="structured_output_generator",
-    model="gemini-2.5-flash-preview-05-20",
+    model="gemini-2.5-flash",
     description="도서 추천을 구조화된 형식으로 변환하는 에이전트",
     instruction="""
     받은 도서 정보를 BookList 스키마에 맞게 정리하세요.
@@ -58,7 +58,7 @@ structured_output_agent = Agent(
 # ④ 오케스트레이션을 담당하는 루트 에이전트
 root_agent = Agent(
     name="book_recommendation_orchestrator",
-    model="gemini-2.5-flash-preview-05-20",
+    model="gemini-2.5-flash",
     description="도서 추천 프로세스를 조정하는 메인 에이전트",
     instruction="""
     사용자의 도서 추천 요청을 처리하는 오케스트레이터입니다.

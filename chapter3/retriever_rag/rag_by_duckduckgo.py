@@ -3,6 +3,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 import time
 
+
 # ① RealtimeWebRAG: 실시간 웹 검색을 활용한 RAG (Retrieval-Augmented Generation)
 class RealtimeWebRAG:
     """실시간 웹 검색을 활용하는 RAG"""
@@ -35,11 +36,13 @@ class RealtimeWebRAG:
         # 1. 웹 검색
         print(f"검색 중: {question}")
         search_results = self.search.run(question)
-        time.sleep(5)  # 5초 대기로 rate limit 방지
+        time.sleep(10)  # 10초 대기로 rate limit 방지
 
         # 2. LLM으로 답변 생성
         qa_chain = self.qa_prompt | self.llm
-        answer = qa_chain.invoke({"search_results": search_results, "question":question})
+        answer = qa_chain.invoke(
+            {"search_results": search_results, "question": question}
+        )
 
         return answer
 

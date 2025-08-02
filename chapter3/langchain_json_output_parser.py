@@ -1,5 +1,4 @@
 from langchain_anthropic import ChatAnthropic
-from langchain_core.prompts import ChatPromptTemplate
 
 llm = ChatAnthropic(model="claude-3-5-haiku-latest")
 

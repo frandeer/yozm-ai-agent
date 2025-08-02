@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.messages import AIMessage, SystemMessage, HumanMessage
+from langchain_core.messages import AIMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 
 
@@ -34,7 +34,7 @@ print("----------------------------------------------------------------")
 
 # ⑥ 체인 생성 (LCEL)
 chain = chat_prompt_template | chat_model | string_output_parser
-print(type(chain))  
+print(type(chain))
 
 # ⑦ 체인 실행
 result = chain.invoke({"question": "파이썬에서 딕셔너리를 정렬하는 방법은?"})

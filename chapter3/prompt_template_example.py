@@ -1,4 +1,4 @@
-import os 
+import os
 from langchain.prompts import PromptTemplate
 
 from langchain.prompts import load_prompt
@@ -24,8 +24,8 @@ print(file_prompt.format(context="서울은 한국의 수도이다.", question="
 
 print("----------------------------------------------------------------")
 base_prompt = PromptTemplate.from_template("'{text}' 문장을 {lang}로 번역하세요.")
-ko_prompt   = base_prompt.partial(lang="Korean")   # lang 고정
-en_prompt   = base_prompt.partial(lang="English")  # 다른 버전
+ko_prompt = base_prompt.partial(lang="Korean")  # lang 고정
+en_prompt = base_prompt.partial(lang="English")  # 다른 버전
 
 print(ko_prompt.format(text="Hello"))
 print(en_prompt.format(text="안녕하세요"))

@@ -6,7 +6,7 @@ from google.adk.tools import google_search
 # ① 날씨 정보 수집 에이전트 생성
 weather_fetcher = Agent(
     name="weather",
-    model="gemini-2.5-flash-preview-05-20",
+    model="gemini-2.5-flash",
     output_key="weather_info",
     instruction="오늘의 날씨 정보를 제공하세요.",
     tools=[google_search],
@@ -15,7 +15,7 @@ weather_fetcher = Agent(
 # ② 날씨 정보 수집 에이전트 생성
 news_fetcher = Agent(
     name="news",
-    model="gemini-2.5-flash-preview-05-20",
+    model="gemini-2.5-flash",
     output_key="news_info",
     instruction="오늘의 주요 뉴스를 요약하세요.",
     tools=[google_search],
@@ -24,7 +24,7 @@ news_fetcher = Agent(
 # ③ 주식 정보 수집 에이전트 생성
 stock_fetcher = Agent(
     name="stocks",
-    model="gemini-2.5-flash-preview-05-20",
+    model="gemini-2.5-flash",
     output_key="stock_info",
     instruction="주요 주식 시장 동향을 제공하세요.",
     tools=[google_search],
@@ -40,7 +40,7 @@ parallel_fetcher = ParallelAgent(
 # ⑤ 수집 결과를 요약하는 에이전트
 summarizer = Agent(
     name="daily_briefing",
-    model="gemini-2.5-flash-preview-05-20",
+    model="gemini-2.5-flash",
     instruction="""
     수집된 정보를 종합하여 일일 브리핑을 작성하세요:
     - 날씨: {weather_info}
