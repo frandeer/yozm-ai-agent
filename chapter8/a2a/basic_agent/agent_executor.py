@@ -32,7 +32,6 @@ class HelloAgent:
         """② 유저 메시지를 처리하고 응답을 생성합니다."""
         chain = self.prompt | self.chat
         response = await chain.ainvoke({"message": user_message})
-
         return response.content
 
 
@@ -46,7 +45,7 @@ class HelloAgentExecutor(AgentExecutor):
         self,
         context: RequestContext,
         event_queue: EventQueue,
-    ) -> None:
+    ):
         """④ 요청을 처리하고 응답을 생성합니다."""
         # 유저 메시지를 추출
         message = context.message
@@ -64,7 +63,7 @@ class HelloAgentExecutor(AgentExecutor):
         self,
         context: RequestContext,
         event_queue: EventQueue,
-    ) -> None:
+    ):
         """요청을 취소"""
         # 취소 기능은 지원하지 않음
         error_msg = "취소 기능은 지원되지 않습니다. Hello 에이전트는 즉시 응답합니다."

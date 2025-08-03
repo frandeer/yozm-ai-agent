@@ -99,7 +99,7 @@ def main():
         "내 이름이 뭐였지?",
         "내가 좋아하는 것과 싫어하는 것은?",
     ]
-    
+
     for i, message in enumerate(conversations, 1):
         print(f"[{i}] 사용자: {message}")
 

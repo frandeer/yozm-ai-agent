@@ -3,6 +3,7 @@ from langgraph.graph import StateGraph, START, END
 from langchain.chat_models import init_chat_model
 from pydantic import BaseModel, Field
 
+
 # Pydantic을 사용한 State 정의
 class AgentState(BaseModel):
     user_message: str = Field(default="", description="사용자 입력 작업")
@@ -31,6 +32,7 @@ def get_llm_response_node(state: AgentState, llm):
     print("--------------------")
 
     return {"response": response, "task_details": ""}
+
 
 # ③ 사람의 입력을 받는 노드
 def get_task_details_node(state: AgentState) -> AgentState:
@@ -87,7 +89,7 @@ def main():
 
     final_state = app.invoke(AgentState(user_message="블로그 글 작성"))
     print("\n--- 워크플로우 종료 ---")
-    print("최종 응답:") 
+    print("최종 응답:")
     print(final_state["response"])
 
 

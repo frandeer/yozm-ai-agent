@@ -50,18 +50,19 @@ def create_weather_agent():
     return graph.compile()
 
 
+def router(state: MessagesState) -> Literal["weather_expert", "general_agent"]:
+    query = state["messages"][-1].content.lower()
+    if "날씨" in query or "기온" in query:
+        print("라우팅 결정: 기상 전문가에게 위임")
+        return "weather_expert"
+    print("라우팅 결정: 일반 에이전트가 처리")
+    return "general_agent"
+
+
 # ② 메인 그래프 생성
 def create_main_agent(weather_subgraph):
     """질문을 라우팅하고 처리하는 메인 에이전트 그래프를 생성합니다."""
     main_model = init_chat_model("gpt-4.1-mini", temperature=0)
-
-    def router(state: MessagesState) -> Literal["weather_expert", "general_agent"]:
-        query = state["messages"][-1].content.lower()
-        if "날씨" in query or "기온" in query:
-            print("라우팅 결정: 기상 전문가에게 위임")
-            return "weather_expert"
-        print("라우팅 결정: 일반 에이전트가 처리")
-        return "general_agent"
 
     workflow = StateGraph(MessagesState)
     workflow.add_node(
@@ -88,7 +89,7 @@ def main():
 
     main_graph_image = main_agent.get_graph(xray=True).draw_mermaid_png()
     with open("main_agent_graph.png", "wb") as f:
-        f.write(main_graph_image)   
+        f.write(main_graph_image)
 
     queries = ["성남 날씨 어때?", "잠은 몇시간 자는게 좋을까?"]
     for query in queries:

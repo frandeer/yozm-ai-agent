@@ -125,7 +125,7 @@ def llm_tool_call(query: str):
 
     # LLM 기반 워크플로우 생성
     app = create_graph(model_with_tools, tool_node)
-    
+
     # 워크플로우 실행
     app.invoke({"messages": [HumanMessage(content=query)]})
 

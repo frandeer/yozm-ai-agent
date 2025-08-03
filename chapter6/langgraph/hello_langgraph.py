@@ -76,7 +76,7 @@ def main():
 
     # ⑦ Mermaid로 그래프 이미지 생성
     result = app.get_graph().draw_mermaid_png()
-    
+
     with open("./hello_langgraph.png", "wb") as f:
         f.write(result)
 
