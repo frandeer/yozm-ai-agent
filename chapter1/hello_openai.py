@@ -12,7 +12,7 @@ api_key = os.environ.get("OPENAI_API_KEY")
 client = OpenAI(api_key=api_key)
 
 
-def get_chat_completion(prompt, model="o3-mini"):
+def get_chat_completion(prompt, model="gpt-5-mini"):
     # OpenAI Chat Completion API를 사용하여 AI의 응답을 받는 함수"
 
     # ④ Chat Completion API 호출

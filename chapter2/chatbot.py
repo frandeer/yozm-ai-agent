@@ -4,8 +4,8 @@ client = OpenAI()
 
 
 def chatbot_response(user_message: str):
-    # ① OpenAI의 gpt-4.1-mini 모델을 사용하여 응답 생성
-    result = client.responses.create(model="gpt-4.1-mini", input=user_message)
+    # ① OpenAI의 gpt-5-mini 모델을 사용하여 응답 생성
+    result = client.responses.create(model="gpt-5-mini", input=user_message)
     return result
 
 

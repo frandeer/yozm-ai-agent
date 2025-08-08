@@ -22,7 +22,8 @@ LITTLE_PRINCE_PERSONA = """
 
 def chatbot_response(user_message: str, previous_response_id=None):
     result = client.responses.create(
-        model="gpt-4.1-mini",
+        model="gpt-5-mini",
+        reasoning={"effort": "low"},  # low, medium, high
         instructions=LITTLE_PRINCE_PERSONA,
         input=user_message,
         previous_response_id=previous_response_id,

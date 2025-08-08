@@ -40,7 +40,7 @@ async def simulate_random_failure():
         f"API 호출 실패: {retry_state.outcome.exception()}, {retry_state.attempt_number}번째 재시도 중..."
     ),
 )
-async def call_async_openai(prompt: str, model: str = "gpt-4.1-mini") -> str:
+async def call_async_openai(prompt: str, model: str = "gpt-5-mini") -> str:
     # ③ await를 사용해 비동기적으로 API 응답을 기다림
     logger.info(f"OpenAI API 호출 시작: {model}")
 

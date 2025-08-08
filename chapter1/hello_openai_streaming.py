@@ -2,7 +2,7 @@ from openai import OpenAI
 import rich
 
 client = OpenAI()
-default_model = "gpt-4.1-mini"
+default_model = "gpt-5-mini"
 
 
 def stream_chat_completion(prompt, model):

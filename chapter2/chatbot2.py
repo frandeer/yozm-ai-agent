@@ -5,7 +5,7 @@ client = OpenAI()
 
 def chatbot_response(user_message: str, previous_response_id=None):
     result = client.responses.create(
-        model="gpt-4.1-mini",
+        model="gpt-5-mini",
         instructions="",
         input=user_message,
         previous_response_id=previous_response_id,
