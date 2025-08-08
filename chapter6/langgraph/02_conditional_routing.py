@@ -14,7 +14,7 @@ class EmotionBotState(BaseModel):
 
 
 # ② LangChain LLM 초기화 - 감정 분석에 사용할 AI 모델 설정
-llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.1, max_tokens=10)
+llm = ChatOpenAI(model="gpt-5-mini", max_tokens=10)
 
 
 # ③ LLM 기반 감정 분석 노드 - 첫 번째 처리 단계

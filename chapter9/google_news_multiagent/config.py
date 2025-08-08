@@ -7,7 +7,7 @@ class Config:
     # OpenAI 설정
     # ① 환경변수에서 API 키를 가져오되, 없으면 빈 문자열을 기본값으로 사용
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-    MODEL_NAME: str = "gpt-4.1-mini"
+    MODEL_NAME: str = "gpt-5-mini"
     TEMPERATURE: float = 0.3
     MAX_TOKENS: int = 150
 

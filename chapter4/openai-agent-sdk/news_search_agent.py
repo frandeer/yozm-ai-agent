@@ -20,11 +20,10 @@ def news_search(query: str) -> str:
         return f"검색 중 오류가 발생했습니다: {str(e)}"
 
 
-
 # ② 에이전트 정의
 news_agent = Agent(
     name="NewsSearchAgent",
-    model="gpt-4.1-mini",
+    model="gpt-5-mini",
     instructions=(
         "당신은 한국어 뉴스 리포터입니다. "
         "WebSearchTool로 최신 뉴스를 검색하고, "

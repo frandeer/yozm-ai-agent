@@ -57,7 +57,7 @@ def check_llm_response(state: AgentState) -> Literal["get_details", "end"]:
 def create_graph():
     """Human-in-the-loop 워크플로우 그래프를 생성합니다."""
     # 그래프 전체에서 사용할 LLM 모델을 초기화합니다.
-    llm = init_chat_model("gpt-4.1-mini", temperature=0.7)
+    llm = init_chat_model("gpt-5-mini", model_provider="openai")
 
     def get_llm_response_with_llm(state):
         return get_llm_response_node(state, llm)

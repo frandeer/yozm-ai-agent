@@ -30,7 +30,9 @@ def get_weather(city_name: str) -> str:
 # ① 기상 전문가 서브그래프 생성
 def create_weather_agent():
     """날씨 관련 질문을 처리하는 전문가 서브그래프를 생성합니다."""
-    model = init_chat_model("gpt-4.1-mini", temperature=0).bind_tools([get_weather])
+    model = init_chat_model("gpt-5-mini", model_provider="openai").bind_tools(
+        [get_weather]
+    )
     tool_node = ToolNode([get_weather])
 
     def call_model(state: MessagesState):
@@ -62,7 +64,7 @@ def router(state: MessagesState) -> Literal["weather_expert", "general_agent"]:
 # ② 메인 그래프 생성
 def create_main_agent(weather_subgraph):
     """질문을 라우팅하고 처리하는 메인 에이전트 그래프를 생성합니다."""
-    main_model = init_chat_model("gpt-4.1-mini", temperature=0)
+    main_model = init_chat_model("gpt-5-mini", model_provider="openai")
 
     workflow = StateGraph(MessagesState)
     workflow.add_node(

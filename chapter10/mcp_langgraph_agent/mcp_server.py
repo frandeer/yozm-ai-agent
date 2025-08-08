@@ -104,7 +104,7 @@ def today_schedule() -> str:
 @mcp.tool()
 def daily_quote() -> str:
     """사용자에게 영감을 주는 명언을 출력합니다"""
-    chat_model = ChatOpenAI(model="gpt-4.1-mini", temperature=0.2)
+    chat_model = ChatOpenAI(model="gpt-5-mini")
     prompt = ChatPromptTemplate.from_messages(
         [
             (

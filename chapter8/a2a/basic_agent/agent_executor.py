@@ -12,8 +12,7 @@ class HelloAgent:
 
     def __init__(self):
         self.chat = ChatOpenAI(
-            model="gpt-4.1-mini",
-            temperature=0.7,
+            model="gpt-5-mini",
         )
 
         self.prompt = ChatPromptTemplate.from_messages(

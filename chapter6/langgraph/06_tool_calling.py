@@ -117,7 +117,7 @@ def llm_tool_call(query: str):
     """하나의 질문에 대해 전체 LLM 워크플로우를 실행하고 로그를 출력합니다."""
     tools = [calculator, get_weather, currency_converter]
     tool_node = ToolNode(tools)
-    model = init_chat_model("gpt-4.1-mini")
+    model = init_chat_model("gpt-5-mini", model_provider="openai")
     model_with_tools = model.bind_tools(tools)
 
     print(f"질문: {query}")

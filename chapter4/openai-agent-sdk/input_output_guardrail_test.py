@@ -36,7 +36,7 @@ class ResponseFormat(BaseModel):
 # ③ 안전성 검사 에이전트
 safety_agent = Agent(
     name="안전성 검사관",
-    model="gpt-4.1-mini",
+    model="gpt-5-mini",
     instructions="""
     사용자 입력의 안전성을 검사합니다.
     다음 항목을 확인하세요:
@@ -87,7 +87,7 @@ async def json_format_guardrail(ctx, agent, output_data):
 # ⑥ 메인 처리 에이전트
 main_agent = Agent(
     name="메인 어시스턴트",
-    model="gpt-4.1-mini",
+    model="gpt-5-mini",
     instructions="""사용자의 요청을 도와드립니다. 
     중요: 반드시 다음 JSON 형식으로만 응답하세요:
     {"status": "success", "result": "결과 내용"}
@@ -101,7 +101,7 @@ main_agent = Agent(
 # ⑦ 출력 가드레일 테스트용 - 잘못된 형식으로 응답하는 에이전트
 bad_format_agent = Agent(
     name="잘못된 형식 에이전트",
-    model="gpt-4.1-mini",
+    model="gpt-5-mini",
     instructions="""사용자의 요청에 일반적인 텍스트로 응답하세요. 
     JSON 형식을 사용하지 마세요. 그냥 평범한 문장으로 답변하세요.""",
     input_guardrails=[content_safety_guardrail],
