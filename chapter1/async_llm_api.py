@@ -50,7 +50,6 @@ async def call_async_openai(prompt: str, model: str = "gpt-5-mini") -> str:
     response = await openai_client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
-        temperature=0.7,
     )
     logger.info("OpenAI API 호출 성공")
     return response.choices[0].message.content

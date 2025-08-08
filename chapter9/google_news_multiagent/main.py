@@ -36,7 +36,6 @@ RSS 수집 → AI 요약 → 카테고리 분류 → 리포트 생성
         # ③ LLM 및 워크플로우 초기화 - AI 모델과 처리 파이프라인 생성
         llm = ChatOpenAI(
             model=Config.MODEL_NAME,
-            temperature=Config.TEMPERATURE,
             max_tokens=Config.MAX_TOKENS,
             api_key=Config.OPENAI_API_KEY,
         )

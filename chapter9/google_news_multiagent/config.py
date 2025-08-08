@@ -8,7 +8,6 @@ class Config:
     # ① 환경변수에서 API 키를 가져오되, 없으면 빈 문자열을 기본값으로 사용
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     MODEL_NAME: str = "gpt-5-mini"
-    TEMPERATURE: float = 0.3
     MAX_TOKENS: int = 150
 
     # ② 현재 파일의 위치를 기준으로 프로젝트 루트 디렉토리를 설정
