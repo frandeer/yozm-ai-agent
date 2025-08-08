@@ -6,7 +6,7 @@ from langchain_core.output_parsers import StrOutputParser
 prompt = ChatPromptTemplate.from_template(
     "주어지는 문구에 대하여 50자 이내의 짧은 시를 작성해주세요 : {word}"
 )
-model = ChatOpenAI(temperature=1.0, model="gpt-4.1-mini")
+model = ChatOpenAI(temperature=1.0, model="gpt-5-mini")
 parser = StrOutputParser()
 
 # ① LCEL로 체인 구성

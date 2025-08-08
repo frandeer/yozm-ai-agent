@@ -4,7 +4,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 
 
-model = ChatOpenAI(model="gpt-4.1-mini")
+model = ChatOpenAI(model="gpt-5-mini")
 parser = StrOutputParser()
 
 

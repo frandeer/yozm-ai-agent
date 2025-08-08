@@ -1,7 +1,7 @@
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_openai import ChatOpenAI
 
-chat_model = ChatOpenAI(model="gpt-4.1-mini")
+chat_model = ChatOpenAI(model="gpt-5-mini")
 
 messages = [
     SystemMessage(

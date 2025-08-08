@@ -5,7 +5,7 @@ from langchain_openai import ChatOpenAI
 
 
 # ① 채팅 모델 초기화
-chat_model = ChatOpenAI(model="gpt-4.1-mini")
+chat_model = ChatOpenAI(model="gpt-5-mini")
 # ② 프롬프트 템플릿 정의
 chat_prompt_template = ChatPromptTemplate.from_messages(
     [
