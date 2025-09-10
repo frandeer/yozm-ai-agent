@@ -3,7 +3,7 @@ from pathlib import Path
 
 import uvicorn
 
-# ① 파이썬 패스에 chapter5/a2a 패키지 경로 추가
+# ① 파이썬 패스에 chapter8/a2a 패키지 경로 추가
 sys.path.append(str(Path(__file__).parent.parent))
 
 from a2a.server.apps import A2AFastAPIApplication
