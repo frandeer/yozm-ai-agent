@@ -19,7 +19,7 @@ print(template.format(article="OpenAI가 GPT-5를 공개했다…", style="뉴�
 
 print("----------------------------------------------------------------")
 current_dir_path = os.path.dirname(os.path.abspath(__file__))
-file_prompt = load_prompt(f"{current_dir_path}/template_example.yaml")
+file_prompt = load_prompt(path=f"{current_dir_path}/template_example.yaml", encoding="utf-8")
 print(file_prompt.format(context="서울은 한국의 수도이다.", question="수도는?"))
 
 print("----------------------------------------------------------------")

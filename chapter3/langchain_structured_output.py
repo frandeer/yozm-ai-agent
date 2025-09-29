@@ -16,7 +16,7 @@ class MovieReview(BaseModel):
 structured_llm = llm.with_structured_output(MovieReview)
 
 result: MovieReview = structured_llm.invoke(
-    "영화 '기생충'에 대한 리뷰를 작성해 주세요."
+    "영화 '맨오브파이어'에 대한 리뷰를 작성해 주세요."
 )
 
 print(type(result))
