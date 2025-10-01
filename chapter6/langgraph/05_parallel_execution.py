@@ -114,7 +114,7 @@ def main():
 
     app = create_graph()
 
-    initial_state = DashboardState(user_location="부산")
+    initial_state = DashboardState(user_location="광주")
 
     print("병렬 실행 시작!")
     result = app.invoke(initial_state)  # ⑨ 워크플로우 실행
