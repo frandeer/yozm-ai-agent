@@ -89,11 +89,11 @@ def main():
     weather_agent = create_weather_agent()
     main_agent = create_main_agent(weather_agent)
 
-    main_graph_image = main_agent.get_graph(xray=True).draw_mermaid_png()
-    with open("main_agent_graph.png", "wb") as f:
-        f.write(main_graph_image)
+    # main_graph_image = main_agent.get_graph(xray=True).draw_mermaid_png()
+    # with open("main_agent_graph.png", "wb") as f:
+    #     f.write(main_graph_image)
 
-    queries = ["성남 날씨 어때?", "잠은 몇시간 자는게 좋을까?"]
+    queries = ["광주광역시 날씨 어때?"]
     for query in queries:
         print(f"\n--- 질문: {query} ---")
         result = main_agent.invoke({"messages": [HumanMessage(content=query)]})
