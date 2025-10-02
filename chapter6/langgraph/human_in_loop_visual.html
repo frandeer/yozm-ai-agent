@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human-in-the-Loop 완벽 이해 | Feynman Technique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @keyframes slide-right {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes bounce-in {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes flow {
+            0% { stroke-dashoffset: 1000; }
+            100% { stroke-dashoffset: 0; }
+        }
+        
+        .animate-pulse-slow {
+            animation: pulse-slow 2s ease-in-out infinite;
+        }
+        
+        .animate-slide-right {
+            animation: slide-right 0.5s ease-out;
+        }
+        
+        .animate-bounce-in {
+            animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .flow-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+        
+        .flow-line.animate {
+            animation: flow 2s ease-in-out forwards;
+        }
+        
+        .node-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .node-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .active-step {
+            border: 3px solid #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-white to-purple-50 min-h-screen">
+    
+    <!-- 헤더 -->
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8 shadow-2xl">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl font-bold mb-3 text-center">🔄 Human-in-the-Loop</h1>
+            <p class="text-xl text-center opacity-90">초등학생도 이해하는 Feynman Technique 설명</p>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-12 max-w-7xl">
+        
+        <!-- 핵심 한 문장 -->
+        <div class="mb-12 text-center">
+            <div class="inline-block bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-8 py-6 rounded-2xl shadow-2xl transform hover:scale-105 transition-transform">
+                <p class="text-3xl font-bold mb-2">💡 한 문장 요약</p>
+                <p class="text-2xl">"AI가 막히면, 사람에게 물어보고, 답 받아서 계속한다"</p>
+            </div>
+        </div>
+
+        <!-- 섹션 1: 5살 아이에게 설명하기 -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800 flex items-center">
+                <span class="bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center mr-4">1</span>
+                5살 아이에게 설명한다면?
+            </h2>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 레스토랑 -->
+                <div class="node-card bg-white rounded-2xl shadow-lg p-6 border-4 border-pink-200">
+                    <div class="text-6xl mb-4 text-center">🍽️</div>
+                    <h3 class="text-2xl font-bold mb-4 text-pink-600">레스토랑에서</h3>
+                    <div class="space-y-3 text-lg">
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">👧</span>
+                            <div>
+                                <p class="font-semibold">손님:</p>
+                                <p class="text-gray-600">"파스타 주세요"</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">🤖</span>
+                            <div>
+                                <p class="font-semibold">웨이터:</p>
+                                <p class="text-gray-600">"어떤 파스타요?"</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start bg-green-100 p-3 rounded-lg">
+                            <span class="text-2xl mr-3">👤</span>
+                            <div>
+                                <p class="font-semibold text-green-700">손님 답변!</p>
+                                <p class="text-gray-600">"까르보나라요"</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">✅</span>
+                            <div>
+                                <p class="font-semibold">웨이터:</p>
+                                <p class="text-gray-600">"주문 완료!"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 의사 -->
+                <div class="node-card bg-white rounded-2xl shadow-lg p-6 border-4 border-blue-200">
+                    <div class="text-6xl mb-4 text-center">🏥</div>
+                    <h3 class="text-2xl font-bold mb-4 text-blue-600">병원에서</h3>
+                    <div class="space-y-3 text-lg">
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">🤒</span>
+                            <div>
+                                <p class="font-semibold">환자:</p>
+                                <p class="text-gray-600">"배가 아파요"</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">🤖</span>
+                            <div>
+                                <p class="font-semibold">의사:</p>
+                                <p class="text-gray-600">"언제부터?"</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start bg-green-100 p-3 rounded-lg">
+                            <span class="text-2xl mr-3">👤</span>
+                            <div>
+                                <p class="font-semibold text-green-700">환자 답변!</p>
+                                <p class="text-gray-600">"어제부터요"</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">✅</span>
+                            <div>
+                                <p class="font-semibold">의사:</p>
+                                <p class="text-gray-600">"처방전 드릴게요"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 게임 -->
+                <div class="node-card bg-white rounded-2xl shadow-lg p-6 border-4 border-purple-200">
+                    <div class="text-6xl mb-4 text-center">🎮</div>
+                    <h3 class="text-2xl font-bold mb-4 text-purple-600">게임에서</h3>
+                    <div class="space-y-3 text-lg">
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">🎮</span>
+                            <div>
+                                <p class="font-semibold">게임:</p>
+                                <p class="text-gray-600">"캐릭터를 고르세요"</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">🤖</span>
+                            <div>
+                                <p class="font-semibold">게임:</p>
+                                <p class="text-gray-600">"전사? 마법사?"</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start bg-green-100 p-3 rounded-lg">
+                            <span class="text-2xl mr-3">👤</span>
+                            <div>
+                                <p class="font-semibold text-green-700">플레이어 선택!</p>
+                                <p class="text-gray-600">"전사요!"</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">✅</span>
+                            <div>
+                                <p class="font-semibold">게임:</p>
+                                <p class="text-gray-600">"게임 시작!"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-yellow-100 border-l-4 border-yellow-500 p-6 rounded-r-lg">
+                <p class="text-xl">
+                    <span class="font-bold">핵심:</span> 
+                    컴퓨터(AI)가 혼자 결정 못 할 때, 사람에게 물어보고 기다리는 거예요! 
+                    마치 엄마가 "저녁 뭐 먹을래?" 물어보고 내 대답을 기다리는 것처럼요 👨‍👩‍👧
+                </p>
+            </div>
+        </section>
+
+        <!-- 섹션 2: 인터랙티브 플로우차트 -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800 flex items-center">
+                <span class="bg-green-500 text-white rounded-full w-12 h-12 flex items-center justify-center mr-4">2</span>
+                동작 원리 (클릭해보세요!)
+            </h2>
+            
+            <div class="bg-white rounded-2xl shadow-2xl p-8">
+                <div id="flowchart" class="space-y-6">
+                    <!-- START -->
+                    <div class="flex flex-col items-center">
+                        <button onclick="startFlow()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold text-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all">
+                            🚀 시작하기 (클릭!)
+                        </button>
+                    </div>
+
+                    <!-- 화살표 -->
+                    <div class="flex justify-center">
+                        <div id="arrow1" class="text-6xl opacity-0">⬇️</div>
+                    </div>
+
+                    <!-- AI 노드 -->
+                    <div id="ai-node" class="max-w-2xl mx-auto bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-2xl shadow-lg opacity-0">
+                        <div class="flex items-center mb-4">
+                            <span class="text-5xl mr-4">🤖</span>
+                            <h3 class="text-2xl font-bold">1단계: AI가 생각합니다</h3>
+                        </div>
+                        <div class="bg-white bg-opacity-20 p-4 rounded-lg">
+                            <p class="text-lg mb-2">💭 <strong>생각:</strong> "정보가 부족한데?"</p>
+                            <p class="text-lg">💬 <strong>질문:</strong> "어떤 주제의 블로그 글인가요?"</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <div id="arrow2" class="text-6xl opacity-0">⬇️</div>
+                    </div>
+
+                    <!-- 라우터 -->
+                    <div id="router-node" class="max-w-2xl mx-auto bg-gradient-to-r from-yellow-400 to-orange-400 text-white p-6 rounded-2xl shadow-lg opacity-0">
+                        <div class="flex items-center mb-4">
+                            <span class="text-5xl mr-4">🧭</span>
+                            <h3 class="text-2xl font-bold">2단계: 라우터가 판단합니다</h3>
+                        </div>
+                        <div class="bg-white bg-opacity-20 p-4 rounded-lg">
+                            <p class="text-lg mb-2">🔍 <strong>확인:</strong> 응답이 '?'로 끝나나?</p>
+                            <p class="text-lg">✅ <strong>결정:</strong> 네! → 사람에게 물어봐야겠다!</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <div id="arrow3" class="text-6xl opacity-0">⬇️</div>
+                    </div>
+
+                    <!-- 사람 노드 (핵심!) -->
+                    <div id="human-node" class="max-w-2xl mx-auto bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 rounded-2xl shadow-lg opacity-0 border-4 border-white">
+                        <div class="flex items-center mb-4">
+                            <span class="text-5xl mr-4">👤</span>
+                            <h3 class="text-2xl font-bold">3단계: 사람이 답변합니다 ⭐ (핵심!)</h3>
+                        </div>
+                        <div class="bg-white bg-opacity-20 p-4 rounded-lg mb-4">
+                            <p class="text-lg mb-3">🛑 <strong>중요:</strong> 워크플로우가 여기서 멈춥니다!</p>
+                            <p class="text-lg mb-3">⏳ <strong>대기:</strong> 사람의 답변을 기다립니다...</p>
+                            <div class="bg-white text-green-700 p-3 rounded-lg mt-3">
+                                <p class="font-bold">👉 답변: "파이썬 초보자 튜토리얼"</p>
+                            </div>
+                        </div>
+                        <div class="text-center text-2xl animate-pulse-slow">
+                            ✨ 이게 Human-in-the-Loop! ✨
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <div id="arrow4" class="text-6xl opacity-0">⬇️</div>
+                    </div>
+
+                    <!-- AI 노드 다시 -->
+                    <div id="ai-node-2" class="max-w-2xl mx-auto bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-2xl shadow-lg opacity-0">
+                        <div class="flex items-center mb-4">
+                            <span class="text-5xl mr-4">🤖</span>
+                            <h3 class="text-2xl font-bold">4단계: AI가 다시 작업합니다</h3>
+                        </div>
+                        <div class="bg-white bg-opacity-20 p-4 rounded-lg">
+                            <p class="text-lg mb-2">💭 <strong>생각:</strong> "이제 정보가 충분해!"</p>
+                            <p class="text-lg">📝 <strong>작업:</strong> 파이썬 튜토리얼 블로그 글 작성 완료!</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <div id="arrow5" class="text-6xl opacity-0">⬇️</div>
+                    </div>
+
+                    <!-- END -->
+                    <div id="end-node" class="flex flex-col items-center opacity-0">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-12 py-6 rounded-full font-bold text-3xl shadow-2xl">
+                            🎉 완료!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button onclick="startFlow()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-lg transition-colors">
+                        🔄 다시 보기
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 3: 핵심 포인트 -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800 flex items-center">
+                <span class="bg-purple-500 text-white rounded-full w-12 h-12 flex items-center justify-center mr-4">3</span>
+                기억해야 할 3가지
+            </h2>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-br from-red-100 to-red-50 p-6 rounded-2xl shadow-lg border-2 border-red-300">
+                    <div class="text-5xl mb-4">🛑</div>
+                    <h3 class="text-2xl font-bold mb-3 text-red-700">1. 멈춘다</h3>
+                    <p class="text-lg text-gray-700">
+                        AI가 작업 중간에 <strong>잠시 멈춥니다</strong>.
+                        마치 신호등의 빨간불처럼!
+                    </p>
+                    <div class="mt-4 bg-white p-3 rounded-lg">
+                        <code class="text-sm">input("답변: ")</code>
+                        <p class="text-sm mt-2 text-gray-600">← 여기서 멈춤!</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-100 to-green-50 p-6 rounded-2xl shadow-lg border-2 border-green-300">
+                    <div class="text-5xl mb-4">👤</div>
+                    <h3 class="text-2xl font-bold mb-3 text-green-700">2. 사람이 개입</h3>
+                    <p class="text-lg text-gray-700">
+                        사람이 <strong>정보를 제공</strong>하거나 <strong>결정</strong>합니다.
+                        사람이 중요한 역할!
+                    </p>
+                    <div class="mt-4 bg-white p-3 rounded-lg">
+                        <p class="text-sm font-bold">예시:</p>
+                        <p class="text-sm mt-1">✅ 추가 정보 제공</p>
+                        <p class="text-sm mt-1">✅ 승인/거부 결정</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-100 to-blue-50 p-6 rounded-2xl shadow-lg border-2 border-blue-300">
+                    <div class="text-5xl mb-4">🔄</div>
+                    <h3 class="text-2xl font-bold mb-3 text-blue-700">3. 계속한다</h3>
+                    <p class="text-lg text-gray-700">
+                        사람의 답을 받으면 AI가 <strong>다시 작업을 계속</strong>합니다.
+                        루프(반복)가 가능!
+                    </p>
+                    <div class="mt-4 bg-white p-3 rounded-lg">
+                        <p class="text-sm font-bold">가능한 흐름:</p>
+                        <p class="text-sm mt-1">AI → 사람 → AI → 완료</p>
+                        <p class="text-sm mt-1">AI → 사람 → AI → 사람 → AI → 완료</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 4: 비교 -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800 flex items-center">
+                <span class="bg-red-500 text-white rounded-full w-12 h-12 flex items-center justify-center mr-4">4</span>
+                일반 AI vs Human-in-the-Loop
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 일반 AI -->
+                <div class="bg-red-50 border-4 border-red-300 p-6 rounded-2xl">
+                    <h3 class="text-2xl font-bold mb-4 text-red-700 flex items-center">
+                        <span class="text-3xl mr-3">❌</span>
+                        일반 AI
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg">
+                            <p class="font-bold text-lg mb-2">입력:</p>
+                            <p class="text-gray-700">"보고서 작성해줘"</p>
+                        </div>
+                        <div class="flex justify-center text-4xl">⬇️</div>
+                        <div class="bg-white p-4 rounded-lg">
+                            <p class="font-bold text-lg mb-2">AI 생각:</p>
+                            <p class="text-gray-700">"뭔 보고서지? 몰라... 실패!"</p>
+                        </div>
+                        <div class="flex justify-center text-4xl">⬇️</div>
+                        <div class="bg-red-200 p-4 rounded-lg">
+                            <p class="font-bold text-lg mb-2">결과:</p>
+                            <p class="text-red-700">😵 실패하거나 엉뚱한 답</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Human-in-the-Loop -->
+                <div class="bg-green-50 border-4 border-green-300 p-6 rounded-2xl">
+                    <h3 class="text-2xl font-bold mb-4 text-green-700 flex items-center">
+                        <span class="text-3xl mr-3">✅</span>
+                        Human-in-the-Loop
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg">
+                            <p class="font-bold text-lg mb-2">입력:</p>
+                            <p class="text-gray-700">"보고서 작성해줘"</p>
+                        </div>
+                        <div class="flex justify-center text-4xl">⬇️</div>
+                        <div class="bg-white p-4 rounded-lg">
+                            <p class="font-bold text-lg mb-2">AI 생각:</p>
+                            <p class="text-gray-700">"어떤 보고서인가요?" 🤖</p>
+                        </div>
+                        <div class="flex justify-center text-4xl">⬇️</div>
+                        <div class="bg-yellow-100 p-4 rounded-lg border-2 border-yellow-400">
+                            <p class="font-bold text-lg mb-2">👤 사람 답변:</p>
+                            <p class="text-gray-700">"분기별 매출 분석"</p>
+                        </div>
+                        <div class="flex justify-center text-4xl">⬇️</div>
+                        <div class="bg-green-200 p-4 rounded-lg">
+                            <p class="font-bold text-lg mb-2">결과:</p>
+                            <p class="text-green-700">🎉 원하는 보고서 완성!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 5: 코드 예시 -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800 flex items-center">
+                <span class="bg-indigo-500 text-white rounded-full w-12 h-12 flex items-center justify-center mr-4">5</span>
+                코드로 보기 (간단하게!)
+            </h2>
+            
+            <div class="bg-gray-900 text-white p-6 rounded-2xl shadow-2xl">
+                <div class="mb-4 flex items-center justify-between">
+                    <span class="text-green-400 font-mono">human_in_loop.py</span>
+                    <span class="text-gray-400 text-sm">Python</span>
+                </div>
+                
+                <pre class="text-sm md:text-base overflow-x-auto"><code><span class="text-gray-400"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="text-gray-400"># 1️⃣ AI 노드: 질문 생성</span>
+<span class="text-gray-400"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="text-purple-400">def</span> <span class="text-blue-400">ai_node</span>(state):
+    <span class="text-yellow-300">if</span> state.has_details:
+        <span class="text-green-400"># 정보 충분 → 작업 완료</span>
+        <span class="text-yellow-300">return</span> <span class="text-orange-300">"작업 완료!"</span>
+    <span class="text-yellow-300">else</span>:
+        <span class="text-green-400"># 정보 부족 → 질문</span>
+        <span class="text-yellow-300">return</span> <span class="text-orange-300">"어떤 보고서인가요?"</span>
+
+<span class="text-gray-400"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="text-gray-400"># 2️⃣ 사람 노드: 입력 받기 ⭐</span>
+<span class="text-gray-400"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="text-purple-400">def</span> <span class="text-blue-400">human_node</span>(state):
+    <span class="text-green-400"># 🛑 여기서 멈춤!</span>
+    answer = <span class="text-yellow-300">input</span>(<span class="text-orange-300">"답변: "</span>)
+    <span class="text-yellow-300">return</span> answer
+
+<span class="text-gray-400"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="text-gray-400"># 3️⃣ 그래프: 노드 연결</span>
+<span class="text-gray-400"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+graph.add_edge(<span class="text-orange-300">"ai"</span>, <span class="text-orange-300">"human"</span>)      <span class="text-green-400"># AI → 사람</span>
+graph.add_edge(<span class="text-orange-300">"human"</span>, <span class="text-orange-300">"ai"</span>)      <span class="text-green-400"># 사람 → AI (루프!)</span>
+</code></pre>
+            </div>
+
+            <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                <p class="text-lg">
+                    <span class="font-bold">핵심 코드:</span>
+                    <code class="bg-blue-200 px-2 py-1 rounded">input()</code> 함수가 호출되면 프로그램이 멈추고 사용자 입력을 기다립니다!
+                </p>
+            </div>
+        </section>
+
+        <!-- 섹션 6: 실제 사용 예시 -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800 flex items-center">
+                <span class="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center mr-4">6</span>
+                어디에 쓰나요?
+            </h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="node-card bg-white p-6 rounded-xl shadow-lg border-2 border-gray-200">
+                    <div class="text-5xl mb-3">💬</div>
+                    <h3 class="text-xl font-bold mb-2">챗봇</h3>
+                    <p class="text-gray-600">사용자 의도가 불명확할 때 추가 질문</p>
+                </div>
+
+                <div class="node-card bg-white p-6 rounded-xl shadow-lg border-2 border-gray-200">
+                    <div class="text-5xl mb-3">📊</div>
+                    <h3 class="text-xl font-bold mb-2">데이터 분석</h3>
+                    <p class="text-gray-600">어떤 그래프를 그릴지 사용자에게 물어봄</p>
+                </div>
+
+                <div class="node-card bg-white p-6 rounded-xl shadow-lg border-2 border-gray-200">
+                    <div class="text-5xl mb-3">✅</div>
+                    <h3 class="text-xl font-bold mb-2">승인 시스템</h3>
+                    <p class="text-gray-600">중요한 결정에 사람의 승인 필요</p>
+                </div>
+
+                <div class="node-card bg-white p-6 rounded-xl shadow-lg border-2 border-gray-200">
+                    <div class="text-5xl mb-3">📝</div>
+                    <h3 class="text-xl font-bold mb-2">문서 작성</h3>
+                    <p class="text-gray-600">작성 방향을 사용자와 확인</p>
+                </div>
+
+                <div class="node-card bg-white p-6 rounded-xl shadow-lg border-2 border-gray-200">
+                    <div class="text-5xl mb-3">💻</div>
+                    <h3 class="text-xl font-bold mb-2">코드 생성</h3>
+                    <p class="text-gray-600">기술 스택 선택을 사용자에게 물어봄</p>
+                </div>
+
+                <div class="node-card bg-white p-6 rounded-xl shadow-lg border-2 border-gray-200">
+                    <div class="text-5xl mb-3">🎨</div>
+                    <h3 class="text-xl font-bold mb-2">디자인 도구</h3>
+                    <p class="text-gray-600">색상이나 레이아웃 선택 요청</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 7: 퀴즈 -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800 flex items-center">
+                <span class="bg-pink-500 text-white rounded-full w-12 h-12 flex items-center justify-center mr-4">7</span>
+                이해했는지 확인! 🎯
+            </h2>
+            
+            <div class="space-y-6">
+                <!-- 질문 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg border-2 border-gray-200">
+                    <h3 class="text-xl font-bold mb-4">Q1. Human-in-the-Loop의 핵심은?</h3>
+                    <div class="space-y-3">
+                        <button onclick="checkAnswer(1, false)" class="w-full text-left p-4 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                            A) AI가 모든 것을 혼자 처리한다
+                        </button>
+                        <button onclick="checkAnswer(1, true)" class="w-full text-left p-4 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                            B) AI가 중간에 멈추고 사람의 입력을 기다린다 ⭐
+                        </button>
+                        <button onclick="checkAnswer(1, false)" class="w-full text-left p-4 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                            C) 사람이 모든 것을 직접 한다
+                        </button>
+                    </div>
+                    <div id="answer1" class="mt-4 hidden"></div>
+                </div>
+
+                <!-- 질문 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg border-2 border-gray-200">
+                    <h3 class="text-xl font-bold mb-4">Q2. 레스토랑 비유에서 Human-in-the-Loop는?</h3>
+                    <div class="space-y-3">
+                        <button onclick="checkAnswer(2, false)" class="w-full text-left p-4 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                            A) 웨이터가 혼자 메뉴를 정한다
+                        </button>
+                        <button onclick="checkAnswer(2, true)" class="w-full text-left p-4 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                            B) 웨이터가 손님에게 "어떤 파스타?" 물어보고 답변을 기다린다 ⭐
+                        </button>
+                        <button onclick="checkAnswer(2, false)" class="w-full text-left p-4 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                            C) 손님이 직접 요리한다
+                        </button>
+                    </div>
+                    <div id="answer2" class="mt-4 hidden"></div>
+                </div>
+
+                <!-- 질문 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg border-2 border-gray-200">
+                    <h3 class="text-xl font-bold mb-4">Q3. 코드에서 워크플로우가 멈추는 부분은?</h3>
+                    <div class="space-y-3">
+                        <button onclick="checkAnswer(3, false)" class="w-full text-left p-4 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-colors font-mono text-sm">
+                            A) print("질문")
+                        </button>
+                        <button onclick="checkAnswer(3, true)" class="w-full text-left p-4 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-colors font-mono text-sm">
+                            B) input("답변: ") ⭐
+                        </button>
+                        <button onclick="checkAnswer(3, false)" class="w-full text-left p-4 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-colors font-mono text-sm">
+                            C) return result
+                        </button>
+                    </div>
+                    <div id="answer3" class="mt-4 hidden"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 요약 -->
+        <section class="mb-16">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-8 rounded-2xl shadow-2xl">
+                <h2 class="text-3xl font-bold mb-6 text-center">🎓 최종 요약</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6 text-lg">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">✅ Human-in-the-Loop는:</h3>
+                        <ul class="space-y-2">
+                            <li>• AI가 중간에 멈춘다</li>
+                            <li>• 사람에게 물어본다</li>
+                            <li>• 답변을 받아서 계속한다</li>
+                            <li>• 여러 번 반복 가능 (루프!)</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">💡 왜 중요한가:</h3>
+                        <ul class="space-y-2">
+                            <li>• AI가 모든 걸 알 수 없다</li>
+                            <li>• 사람의 판단이 필요할 때</li>
+                            <li>• 중요한 결정은 사람이</li>
+                            <li>• 더 정확한 결과!</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center text-2xl font-bold bg-white bg-opacity-20 p-4 rounded-lg">
+                    "AI가 막히면, 사람에게 물어보고, 답 받아서 계속한다" 🔄
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-lg mb-2">🎯 이제 Human-in-the-Loop를 완벽히 이해했나요?</p>
+            <p class="text-gray-400">Feynman Technique으로 초등학생도 이해하는 설명!</p>
+            <div class="mt-4">
+                <a href="07_human_in_loop_explained.py" class="text-blue-400 hover:text-blue-300 underline">Python 코드 보기</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 플로우차트 애니메이션
+        function startFlow() {
+            // 모든 요소 초기화
+            const elements = ['arrow1', 'ai-node', 'arrow2', 'router-node', 'arrow3', 'human-node', 'arrow4', 'ai-node-2', 'arrow5', 'end-node'];
+            elements.forEach(id => {
+                const el = document.getElementById(id);
+                el.style.opacity = '0';
+                el.classList.remove('animate-bounce-in', 'animate-slide-right');
+            });
+
+            // 순차적으로 표시
+            const delays = [500, 600, 1200, 1300, 1900, 2000, 2600, 2700, 3300, 3400];
+            elements.forEach((id, index) => {
+                setTimeout(() => {
+                    const el = document.getElementById(id);
+                    el.style.opacity = '1';
+                    if (id.startsWith('arrow')) {
+                        el.classList.add('animate-bounce-in');
+                    } else {
+                        el.classList.add('animate-slide-right');
+                    }
+                }, delays[index]);
+            });
+        }
+
+        // 퀴즈 답변 체크
+        function checkAnswer(questionNum, isCorrect) {
+            const answerDiv = document.getElementById(`answer${questionNum}`);
+            answerDiv.classList.remove('hidden');
+            
+            if (isCorrect) {
+                answerDiv.innerHTML = `
+                    <div class="bg-green-100 border-l-4 border-green-500 p-4 rounded-r-lg">
+                        <p class="text-green-700 font-bold text-lg">
+                            ✅ 정답입니다! 완벽하게 이해하셨네요! 🎉
+                        </p>
+                    </div>
+                `;
+            } else {
+                answerDiv.innerHTML = `
+                    <div class="bg-red-100 border-l-4 border-red-500 p-4 rounded-r-lg">
+                        <p class="text-red-700 font-bold text-lg">
+                            ❌ 아쉽네요. 다시 위 내용을 읽어보세요! 💪
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // 페이지 로드 시 부드러운 등장
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+
