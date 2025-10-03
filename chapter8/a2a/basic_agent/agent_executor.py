@@ -48,9 +48,21 @@ class HelloAgentExecutor(AgentExecutor):
         """④ 요청을 처리하고 응답을 생성합니다."""
         # 유저 메시지를 추출
         message = context.message
+        user_message = ""
+        
         for part in message.parts:
-            if part.root.text:
+            if hasattr(part, 'text') and part.text:
+                user_message = part.text
+                break
+            elif hasattr(part.root, 'text') and part.root.text:
                 user_message = part.root.text
+                break
+        
+        if not user_message:
+            await event_queue.enqueue_event(
+                new_agent_text_message("메시지를 받지 못했습니다.")
+            )
+            return
 
         # 에이전트 실행
         result = await self.agent.invoke(user_message)

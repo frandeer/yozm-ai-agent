@@ -167,7 +167,7 @@ def extract_action_items(state: MeetingState) -> Dict[str, Any]:
 
 팀원 목록: {team_members_str}
 
-다음 JSON 형식으로 응답하세요:
+다음 JSON 형식으로 응답하세요 (오직 JSON만 반환하고 다른 텍스트는 포함하지 마세요):
 {{
   "action_items": [
     {{
@@ -183,14 +183,26 @@ def extract_action_items(state: MeetingState) -> Dict[str, Any]:
 실제로 실행해야 할 구체적인 작업만 추출하세요."""
     
     messages = [
-        SystemMessage(content="당신은 회의록에서 액션 아이템을 추출하는 전문가입니다."),
+        SystemMessage(content="당신은 회의록에서 액션 아이템을 추출하는 전문가입니다. 응답은 반드시 순수 JSON 형식만 반환하세요."),
         HumanMessage(content=prompt)
     ]
     
     response = llm.invoke(messages)
     
     try:
-        result = json.loads(response.content)
+        # LLM 응답에서 JSON 추출 (마크다운 코드 블록 제거)
+        content = response.content.strip()
+        
+        # ```json ... ``` 형식 제거
+        if content.startswith("```"):
+            # 첫 번째 줄 제거 (```json)
+            lines = content.split("\n")
+            content = "\n".join(lines[1:-1]) if len(lines) > 2 else content
+            # 마지막 ``` 제거
+            content = content.replace("```", "").strip()
+        
+        # JSON 파싱
+        result = json.loads(content)
         action_items = result.get("action_items", [])
         
         print(f"\n✅ {len(action_items)}개의 액션 아이템을 찾았습니다:")
@@ -208,6 +220,8 @@ def extract_action_items(state: MeetingState) -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"⚠️ 액션 아이템 추출 실패: {e}")
+        print(f"🔍 LLM 응답 내용:")
+        print(f"{response.content[:500]}...")  # 디버깅용: 응답 일부 출력
         return {
             "action_items": [],
             "current_step": "action_items_extracted"

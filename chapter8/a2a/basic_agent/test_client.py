@@ -30,7 +30,8 @@ async def test_basic_agent():
     print(f"서버 URL: {base_url}")
     print("-" * 50)
 
-    async with httpx.AsyncClient() as httpx_client:
+    # 타임아웃을 60초로 설정
+    async with httpx.AsyncClient(timeout=60.0) as httpx_client:
         try:
             # ① A2A 카드 리졸버 생성
             resolver = A2ACardResolver(

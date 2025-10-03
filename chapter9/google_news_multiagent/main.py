@@ -41,6 +41,16 @@ RSS 수집 → AI 요약 → 카테고리 분류 → 리포트 생성
         )
         app = create_news_workflow(llm)
 
+        # 랭그래프 이미지 생성
+        try:
+            mermaid_png = app.get_graph().draw_mermaid_png()
+            os.makedirs(Config.OUTPUT_DIR, exist_ok=True)
+            with open(f"{Config.OUTPUT_DIR}/news_workflow.png", "wb") as f:
+                f.write(mermaid_png)
+            print("✅ 워크플로우 그래프 생성 완료: news_workflow.png")
+        except Exception as e:
+            print(f"⚠️ 그래프 시각화 실패 (워크플로우 실행에는 영향 없음): {e}")
+
         # ④ 워크플로우 실행 - 초기 상태 설정 후 비동기로 전체 파이프라인 실행
         initial_state = NewsState(
             messages=[HumanMessage(content="Google News RSS 처리를 시작합니다.")]
