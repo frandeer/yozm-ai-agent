@@ -49,7 +49,7 @@ def create_agent(tools):
     """주어진 도구를 사용하여 에이전트를 생성합니다."""
     memory = InMemorySaver()
     prompt = create_prompt_template()
-    llm = ChatOpenAI(model="gpt-5-mini")
+    llm = ChatOpenAI(model="gpt-4o-mini")
     return create_react_agent(llm, tools, checkpointer=memory, prompt=prompt)
 
 
